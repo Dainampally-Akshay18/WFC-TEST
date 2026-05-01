@@ -248,6 +248,20 @@ Admin can:
 
 ---
 
+## 🔴 Important: LEADER Limitations
+
+LEADER Cannot:
+- Promote users
+- Delete users  
+- Manage all branches (only their own)
+- Promote users to ADMIN
+
+Only MASTER_ADMIN can:
+- Promote users to ADMIN
+- Delete users
+- Manage all branches
+
+
 # 📜 7. Access Rules Summary
 
 | Action             | USER             | LEADER           | MASTER_ADMIN |
@@ -255,7 +269,7 @@ Admin can:
 | Login              | Only if approved | Only if approved | Always       |
 | Access Admin Panel | ❌                | ✅                | ✅            |
 | Approve Users      | ❌                | ✅                | ✅            |
-| Manage Roles       | ❌                | ⚠️ (optional)    | ✅            |
+| Manage Roles       | ❌                | ❌     | ✅            |
 
 ---
 

@@ -33,6 +33,7 @@ Blog {
 
 👉 Only **Master Admin (Pastor)** writes blogs
 👉 Users → **read-only**
+ALL users from both branches can view
 
 This is your:
 👉 Teaching / message / article system

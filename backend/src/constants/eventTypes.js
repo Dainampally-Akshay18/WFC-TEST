@@ -1,0 +1,10 @@
+export const EVENT_TYPES = {
+  PRAYER: 'PRAYER',
+  SERMON: 'SERMON',
+  WORSHIP: 'WORSHIP',
+  OUTREACH: 'OUTREACH',
+  CONFERENCE: 'CONFERENCE',
+  OTHER: 'OTHER',
+};
+
+export default EVENT_TYPES;

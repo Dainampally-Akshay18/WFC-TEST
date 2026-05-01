@@ -58,9 +58,18 @@ When admin approves a user:
 
 → Notify all users
 
+### Case 3: User Creates Branch Event
+
+```js
+Notify:
+- Users of that branch
+- All ADMIN/LEADER of that branch
+- MASTER_ADMIN (global)
+```
+
 ---
 
-## 🙏 3. Prayer Request (Optional)
+## 🙏 3. Prayer Request (Should be)
 
 * When someone prays:
 

@@ -104,6 +104,11 @@ abc123
   * Update
   * Delete
 
+### ⚠️ Note: Sermons are GLOBAL (not branch-specific)
+- Only ADMIN/LEADER create
+- ALL users can view
+- No branch restrictions
+
 ---
 
 ## 🟠 LEADER / 🔴 ADMIN

@@ -27,6 +27,7 @@ PrayerRequest {
 }
 
 ```
+
 ---
 
 # 🧠 Core Idea
@@ -85,14 +86,15 @@ isAnonymous = false
 
 ---
 
-### Case 2: Anonymous request
+### Case 2: Anonymous request (User is LOGGED IN)
+
+⚠️ IMPORTANT: User MUST be logged in to create prayer
 
 ```js
-createdBy = null
+createdBy = user.id     // ✅ Still tracked internally
 creatorName = "Anonymous"
 isAnonymous = true
 ```
-
 ---
 
 # 📖 4. Get Prayer Requests
@@ -231,7 +233,7 @@ Because this is **public content**, you must handle:
 
 ---
 
-# 🔔 11. Optional Enhancements (🔥)
+# 🔔 11. Core Enhancements (🔥)
 
 ---
 

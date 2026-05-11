@@ -1,7 +1,7 @@
 import User from './auth.model.js';
 import { generateToken } from '../../utils/generateToken.js';
 import { hashPassword, comparePassword } from '../../utils/hashPassword.js';
-import { sendEmail } from '../../services/email.service.js';
+import { sendEmail, sendPasswordResetEmail } from '../../services/email.service.js';
 import crypto from 'crypto';
 
 /**

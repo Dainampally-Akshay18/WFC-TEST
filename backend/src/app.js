@@ -1,3 +1,5 @@
+
+
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -5,6 +7,16 @@ import dotenv from 'dotenv';
 // Import middleware
 import authMiddleware from './middleware/auth.middleware.js';
 import errorMiddleware from './middleware/error.middleware.js';
+
+// console.log('📍 app.js loaded');
+// try {
+//   console.log('📍 importing auth routes...');
+//   import authRouter from './modules/auth/auth.routes.js';
+//   console.log('✅ auth routes imported successfully');
+// } catch(e) {
+//   console.error('❌ Auth routes import failed:', e.message);
+//   console.error(e.stack);
+// }
 
 // Import routes
 import authRouter from './modules/auth/auth.routes.js';
@@ -46,6 +58,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // ============= API ROUTES =============
+
 
 // Auth routes (public)
 app.use('/api/auth', authRouter);

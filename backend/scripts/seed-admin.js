@@ -33,13 +33,13 @@ const seedAdmin = async () => {
     }
 
     // Hash password
-    const password = process.env.MASTER_ADMIN_PASSWORD || 'Psalms@Proverbs@15031';
+    const password = process.env.MASTER_ADMIN_PASSWORD || 'Admin@123456';
     const hashedPassword = await hashPassword(password);
 
     // Create MASTER_ADMIN user
     const adminUser = new User({
       name: 'Master Admin',
-      email: process.env.MASTER_ADMIN_EMAIL || 'vg@wfc.com',
+      email: process.env.MASTER_ADMIN_EMAIL || 'admin@example.com',
       password: hashedPassword,
       role: 'MASTER_ADMIN',
       status: 'APPROVED',

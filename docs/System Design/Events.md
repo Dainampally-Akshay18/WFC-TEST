@@ -1,4 +1,3 @@
-
 # 🧠 Updated Concept: Event Visibility
 
 We need to introduce a new idea:

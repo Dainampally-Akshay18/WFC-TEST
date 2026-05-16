@@ -241,9 +241,4 @@ This makes your system:
 
 ---
 
-## 👉 You said “one more thing…”
 
-Finish that thought.
-
-Then we’ll move to:
-👉 **Sermons System Design**

@@ -25,7 +25,7 @@ import eventRouter from './modules/event/event.routes.js';
 import sermonRouter from './modules/sermon/sermon.routes.js';
 import prayerRouter from './modules/prayer/prayer.routes.js';
 import blogRouter from './modules/blog/blog.routes.js';
-import notificationRouter from './modules/notification/notification.routes.js';
+import { notificationRouter } from './modules/notification/notification.routes.js';
 import auditRouter from './modules/audit/audit.routes.js';
 
 dotenv.config();

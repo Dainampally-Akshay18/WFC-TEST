@@ -1,5 +1,5 @@
 import Prayer from './prayer.model.js';
-import Notification from '../notification/notification.model.js';
+import { Notification } from '../notification/notification.model.js';
 import User from '../auth/auth.model.js';
 import { auditHelper } from '../../services/audit.helper.js';
 

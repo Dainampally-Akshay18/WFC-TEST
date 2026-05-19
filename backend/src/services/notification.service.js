@@ -1,3 +1,7 @@
+// DEPRECATED: Use notification module service instead
+// Location: src/modules/notification/notification.service.js
+// Helper: src/services/notification.helper.js
+
 export const notificationService = {
   async sendNotification(userId, type, message) {
     try {
@@ -11,5 +15,3 @@ export const notificationService = {
     }
   },
 };
-
-export default notificationService;

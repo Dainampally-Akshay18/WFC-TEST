@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { notificationController } from './notification.controller.js';
-import { notificationValidation } from './notification.validation.js';
+import notificationController from './notification.controller.js';
+import notificationValidation from './notification.validation.js';
 import { validateRequest } from '../../middleware/validate.middleware.js';
 
 /**
@@ -92,4 +92,4 @@ notificationRouter.patch(
   notificationController.markAsRead
 );
 
-export { notificationRouter };
+export default notificationRouter;

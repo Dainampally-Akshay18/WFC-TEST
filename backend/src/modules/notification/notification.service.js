@@ -1,4 +1,4 @@
-import { Notification } from './notification.model.js';
+import Notification from './notification.model.js';
 import User from '../auth/auth.model.js';
 
 /**
@@ -275,3 +275,5 @@ export const notificationService = {
     }
   },
 };
+
+export default notificationService;

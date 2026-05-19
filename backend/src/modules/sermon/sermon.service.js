@@ -1,8 +1,8 @@
 import { SermonCategory, Sermon } from './sermon.model.js';
 import User from '../auth/auth.model.js';
-import { Notification } from '../notification/notification.model.js';
+import Notification from '../notification/notification.model.js';
 import { auditHelper } from '../../services/audit.helper.js';
-import { notificationHelper } from '../../services/notification.helper.js';
+import notificationHelper from '../../services/notification.helper.js';
 import extractYoutubeId from '../../utils/extractYoutubeId.js';
 
 /**

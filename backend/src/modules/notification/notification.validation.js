@@ -65,3 +65,5 @@ export const notificationValidation = {
       'object.base': 'Request body must be an object',
     }),
 };
+
+export default notificationValidation;

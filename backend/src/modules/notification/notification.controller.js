@@ -1,4 +1,4 @@
-import { notificationService } from './notification.service.js';
+import notificationService from './notification.service.js';
 import { asyncHandler } from '../../utils/asyncHandler.js';
 
 /**
@@ -171,3 +171,5 @@ export const notificationController = {
     });
   }),
 };
+
+export default notificationController;

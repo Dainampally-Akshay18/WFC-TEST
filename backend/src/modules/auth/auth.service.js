@@ -1,7 +1,8 @@
 import User from './auth.model.js';
 import { generateToken } from '../../utils/generateToken.js';
 import { hashPassword, comparePassword } from '../../utils/hashPassword.js';
-import { sendEmail, sendPasswordResetEmail } from '../../services/email.service.js';
+import { sendEmail, sendPasswordResetEmail, sendApprovalEmail, sendRejectionEmail } from '../../services/email.service.js';
+import { auditService } from '../audit/audit.service.js';
 import crypto from 'crypto';
 
 /**
@@ -42,6 +43,47 @@ export const authService = {
       });
 
       await newUser.save();
+
+      // ✅ Log user signup in audit trail
+      await auditService.logAction({
+        action: 'CREATE_USER',
+        performedBy: newUser._id,
+        performerRole: 'USER',
+        targetId: newUser._id,
+        targetType: 'USER',
+        metadata: {
+          branch: newUser.branch,
+          email: newUser.email,
+          name: newUser.name,
+          status: 'PENDING',
+          reason: 'User self-registered'
+        }
+      });
+
+      // ✅ Send welcome email
+      const welcomeHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px;">
+          <h2>Welcome to WFC!</h2>
+          <p>Hi ${name},</p>
+          <p>Your account has been created successfully! We're reviewing your information and you'll receive an approval email soon.</p>
+          <p>Thank you for joining our community.</p>
+          <hr />
+          <p style="color: #666; font-size: 12px;">This is an automated email. Please do not reply.</p>
+        </div>
+      `;
+      
+      try {
+        console.log(`📧 Sending welcome email to: ${newUser.email}`);
+        const emailResult = await sendEmail(newUser.email, 'Welcome to WFC!', welcomeHtml);
+        if (emailResult.success) {
+          console.log(`✅ Welcome email sent successfully to ${newUser.email}`);
+        } else {
+          console.warn(`⚠️ Welcome email failed: ${emailResult.message}`);
+        }
+      } catch (emailError) {
+        console.warn('⚠️ Welcome email failed to send:', emailError.message);
+        // Don't fail signup if email fails
+      }
 
       // ✅ Return safe data (no password)
       return {
@@ -84,6 +126,21 @@ export const authService = {
         userId: user._id,
         role: user.role,
         branch: user.branch,
+      });
+
+      // ✅ Log user login in audit trail
+      await auditService.logAction({
+        action: 'LOGIN',
+        performedBy: user._id,
+        performerRole: user.role,
+        targetId: user._id,
+        targetType: 'USER',
+        metadata: {
+          branch: user.branch,
+          email: user.email,
+          name: user.name,
+          role: user.role
+        }
       });
 
       return {
@@ -209,13 +266,30 @@ export const authService = {
       user.createdBy = adminId;
       await user.save();
 
-      // ✅ Send approval email
-      const emailContent = `
-        <h2>Account Approved</h2>
-        <p>Your account has been approved! You can now login.</p>
-      `;
+      // ✅ Log user approval/grant access in audit trail
+      await auditService.logAction({
+        action: 'APPROVE_USER',
+        performedBy: adminId,
+        performerRole: 'MASTER_ADMIN',
+        targetId: user._id,
+        targetType: 'USER',
+        metadata: {
+          branch: user.branch,
+          email: user.email,
+          name: user.name,
+          previousStatus: 'PENDING',
+          newStatus: 'APPROVED',
+          reason: 'Admin granted access to user'
+        }
+      });
 
-      await sendEmail(user.email, 'Account Approved', emailContent);
+      // ✅ Send approval email
+      try {
+        await sendApprovalEmail(user.email, user.name);
+      } catch (emailError) {
+        console.warn('⚠️ Approval email failed to send:', emailError.message);
+        // Don't fail approval if email fails
+      }
 
       return {
         message: 'User approved successfully',
@@ -254,14 +328,30 @@ export const authService = {
       }
       await user.save();
 
-      // ✅ Send rejection email
-      const emailContent = `
-        <h2>Account Rejected</h2>
-        <p>Unfortunately, your account application was rejected.</p>
-        ${reason ? `<p>Reason: ${reason}</p>` : ''}
-      `;
+      // ✅ Log user rejection in audit trail
+      await auditService.logAction({
+        action: 'REJECT_USER',
+        performedBy: adminId,
+        performerRole: 'MASTER_ADMIN',
+        targetId: user._id,
+        targetType: 'USER',
+        metadata: {
+          branch: user.branch,
+          email: user.email,
+          name: user.name,
+          previousStatus: 'PENDING',
+          newStatus: 'REJECTED',
+          reason: reason || 'Not specified'
+        }
+      });
 
-      await sendEmail(user.email, 'Account Rejection', emailContent);
+      // ✅ Send rejection email
+      try {
+        await sendRejectionEmail(user.email, user.name, reason);
+      } catch (emailError) {
+        console.warn('⚠️ Rejection email failed to send:', emailError.message);
+        // Don't fail rejection if email fails
+      }
 
       return {
         message: 'User rejected successfully',
@@ -290,6 +380,23 @@ export const authService = {
       user.role = 'LEADER';
       user.createdBy = adminId;
       await user.save();
+
+      // ✅ Log user role change in audit trail
+      await auditService.logAction({
+        action: 'UPDATE_ROLE',
+        performedBy: adminId,
+        performerRole: 'MASTER_ADMIN',
+        targetId: user._id,
+        targetType: 'USER',
+        metadata: {
+          branch: user.branch,
+          email: user.email,
+          name: user.name,
+          previousRole: 'USER',
+          newRole: 'LEADER',
+          reason: 'User promoted to leader'
+        }
+      });
 
       // ✅ Send promotion email
       const emailContent = `

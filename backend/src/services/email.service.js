@@ -1,25 +1,36 @@
-import sgMail from '@sendgrid/mail';
-import sendGridConfig from '../config/sendgrid.js';
+import { Resend } from 'resend';
+import getResendConfig from '../config/sendgrid.js';
 
 /**
  * ============================================
  * EMAIL SERVICE
  * ============================================
  * 
- * Send emails via SendGrid
+ * Send emails via Resend
  */
 
-// Initialize SendGrid
-if (sendGridConfig.apiKey) {
-  sgMail.setApiKey(sendGridConfig.apiKey);
-}
+// Lazy-load Resend to allow environment variables to be loaded first
+let resend = null;
+
+const getResendClient = () => {
+  if (!resend) {
+    const resendConfig = getResendConfig();
+    
+    if (!resendConfig.apiKey) {
+      throw new Error('❌ CRITICAL: Resend API key is NOT set! Add RESEND_API_KEY to .env');
+    }
+    resend = new Resend(resendConfig.apiKey);
+    console.log('✅ Resend initialized with API key');
+  }
+  return resend;
+};
 
 /**
- * Send email using SendGrid
+ * Send email using Resend
  * @param {String} to - Recipient email
  * @param {String} subject - Email subject
  * @param {String} html - HTML email content
- * @returns {Promise} SendGrid response
+ * @returns {Promise} Resend response
  */
 export const sendEmail = async (to, subject, html) => {
   try {
@@ -28,30 +39,27 @@ export const sendEmail = async (to, subject, html) => {
       throw new Error('Missing required email fields: to, subject, html');
     }
 
-    // Check if SendGrid is configured
-    if (!sendGridConfig.apiKey) {
-      console.warn('⚠️  SendGrid API key not configured. Email not sent to:', to);
-      return {
-        success: false,
-        message: 'Email service not configured',
-      };
-    }
+    // Get Resend client (lazy load)
+    const resendClient = getResendClient();
+    const resendConfig = getResendConfig();
 
-    const msg = {
+    const response = await resendClient.emails.send({
+      from: resendConfig.fromEmail,
       to,
-      from: sendGridConfig.fromEmail,
       subject,
       html,
-    };
+    });
 
-    const response = await sgMail.send(msg);
+    if (response.error) {
+      throw new Error(response.error.message);
+    }
 
     console.log(`✅ Email sent successfully to ${to}`);
 
     return {
       success: true,
       message: 'Email sent successfully',
-      messageId: response[0]?.messageId,
+      messageId: response.data?.id,
     };
   } catch (error) {
     console.error('❌ Email service error:', error.message);

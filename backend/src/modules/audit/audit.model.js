@@ -4,88 +4,118 @@ import mongoose from 'mongoose';
  * ============================================
  * AUDIT LOG SCHEMA
  * ============================================
- * 
- * Immutable audit trail for all important actions
+ *
+ * IMMUTABLE audit trail for all important actions
  * Provides accountability and debugging capability
- * 
- * Schema:
+ *
+ * Core Design:
  * - action: action type (CREATE_BLOG, APPROVE_USER, etc.)
  * - performedBy: userId who performed action
  * - performerRole: role of performer (USER, LEADER, MASTER_ADMIN)
  * - targetId: entity affected (blogId, userId, etc.)
  * - targetType: entity type (BLOG, USER, EVENT, etc.)
- * - metadata: extra info (previous state, details, etc.)
- * - createdAt: timestamp
+ * - metadata: flexible object for storing extra info, branch info, etc.
+ * - createdAt: immutable timestamp
+ *
+ * IMPORTANT: No updates or deletes - append-only log
  */
 
 const auditSchema = new mongoose.Schema(
   {
-    // ⚙️ Action
+    // ⚙️ ACTION
     action: {
       type: String,
-      required: true,
-      // e.g., CREATE_BLOG, UPDATE_BLOG, PUBLISH_BLOG, DELETE_BLOG
-      // APPROVE_USER, REJECT_USER, PROMOTE_USER
-      // CREATE_EVENT, UPDATE_EVENT, DELETE_EVENT
+      required: [true, 'Action is required'],
+      index: true,
+      // Examples:
+      // AUTH: SIGNUP, LOGIN, APPROVE_USER, REJECT_USER, CHANGE_ROLE
+      // EVENTS: CREATE_EVENT, UPDATE_EVENT, DELETE_EVENT
+      // PRAYERS: CREATE_PRAYER, UPDATE_PRAYER, DELETE_PRAYER, PRAYED
+      // SERMONS: CREATE_SERMON, UPDATE_SERMON, DELETE_SERMON, PUBLISH_SERMON
+      // BLOGS: CREATE_BLOG, UPDATE_BLOG, DELETE_BLOG, PUBLISH_BLOG
     },
 
-    // 👤 Performer
+    // 👤 PERFORMER INFO
     performedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+      required: [true, 'Performer ID is required'],
+      index: true,
     },
 
     performerRole: {
       type: String,
-      enum: ['USER', 'LEADER', 'MASTER_ADMIN'],
-      required: true,
+      enum: {
+        values: ['USER', 'LEADER', 'MASTER_ADMIN'],
+        message: 'Role must be USER, LEADER, or MASTER_ADMIN',
+      },
+      required: [true, 'Performer role is required'],
+      index: true,
     },
 
-    // 🎯 Target
+    // 🎯 TARGET INFO
     targetId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      // Can be userId, blogId, eventId, etc.
+      required: [true, 'Target ID is required'],
+      index: true,
+      // Can be userId, blogId, eventId, prayerId, sermonId, etc.
     },
 
     targetType: {
       type: String,
-      required: true,
-      enum: ['USER', 'BLOG', 'EVENT', 'PRAYER', 'SERMON', 'NOTIFICATION'],
+      enum: {
+        values: ['USER', 'BLOG', 'EVENT', 'PRAYER', 'SERMON', 'NOTIFICATION', 'SERMON_CATEGORY'],
+        message: 'Target type must be USER, BLOG, EVENT, PRAYER, SERMON, NOTIFICATION, or SERMON_CATEGORY',
+      },
+      required: [true, 'Target type is required'],
+      index: true,
     },
 
-    // 📋 Metadata
+    // 📋 METADATA (FLEXIBLE)
     metadata: {
       type: mongoose.Schema.Types.Mixed,
-      // Optional: store previous values, details, etc.
-      // e.g., { previousRole: 'USER', newRole: 'LEADER' }
-      // e.g., { blogTitle: 'How to Strengthen Faith', previousStatus: 'draft' }
+      default: {},
+      // Optional: store context-specific info
+      // Examples:
+      // { branch: "BRANCH1", blogTitle: "...", previousStatus: "draft" }
+      // { branch: "GLOBAL", eventTitle: "Sunday Service" }
+      // { previousRole: "USER", newRole: "LEADER" }
+      // For branch-aware filtering by LEADERs
     },
   },
-  { timestamps: true }
-  // createdAt is automatically added (immutable)
+  {
+    timestamps: true, // createdAt, updatedAt (immutable after creation)
+    collection: 'audits',
+  }
 );
 
-// ============= INDEXES =============
+// ============================================
+// INDEXES (For Query Optimization)
+// ============================================
 
-// For fast lookups by action type
+// Fast lookup by action type with date
 auditSchema.index({ action: 1, createdAt: -1 });
 
-// For user activity history
+// User activity history
 auditSchema.index({ performedBy: 1, createdAt: -1 });
 
-// For entity tracking
+// Role-based queries
+auditSchema.index({ performerRole: 1, createdAt: -1 });
+
+// Entity tracking
 auditSchema.index({ targetType: 1, targetId: 1, createdAt: -1 });
 
-// ============= IMMUTABILITY =============
+// Combined for common queries (action + date)
+auditSchema.index({ action: 1, performedBy: 1, createdAt: -1 });
 
-// Make schema immutable (no updates allowed)
-auditSchema.set('collection', 'audits');
+// For branch-aware filtering (in metadata)
+auditSchema.index({ 'metadata.branch': 1, createdAt: -1 });
 
-// ============= EXPORTS =============
+// ============================================
+// MODEL
+// ============================================
 
-export const Audit = mongoose.model('Audit', auditSchema);
+const Audit = mongoose.model('Audit', auditSchema);
 
 export default Audit;
 

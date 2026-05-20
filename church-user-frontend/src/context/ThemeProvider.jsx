@@ -4,7 +4,7 @@
  * Manages dark/light mode and applies theme to UI
  */
 
-import { useEffect, createContext } from "react";
+import { useEffect, createContext, useContext } from "react";
 import { useThemeStore } from "../store/themeStore";
 import { darkTheme } from "../theme/darkTheme";
 import { lightTheme } from "../theme/lightTheme";
@@ -13,35 +13,42 @@ export const ThemeContext = createContext(null);
 
 export const ThemeProvider = ({ children }) => {
   const theme = useThemeStore((state) => state.theme);
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
   const setTheme = useThemeStore((state) => state.setTheme);
 
   // Get current theme object
-  const currentTheme = theme === "dark" ? darkTheme : lightTheme;
+  const isDarkMode = theme === "dark";
+  const currentTheme = isDarkMode ? darkTheme : lightTheme;
 
   // Apply theme to document on mount and when theme changes
   useEffect(() => {
-    if (theme === "dark") {
+    if (isDarkMode) {
       document.documentElement.classList.add("dark");
       document.documentElement.style.colorScheme = "dark";
     } else {
       document.documentElement.classList.remove("dark");
       document.documentElement.style.colorScheme = "light";
     }
-  }, [theme]);
+  }, [isDarkMode]);
+
+  const themeContextValue = {
+    theme,
+    isDarkMode,
+    isLightMode: !isDarkMode,
+    toggleTheme,
+    setTheme,
+    currentTheme,
+    colors: currentTheme.colors,
+    gradients: currentTheme.gradients,
+    glassmorphism: currentTheme.glassmorphism,
+    shadows: currentTheme.shadows,
+  };
 
   return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        setTheme,
-        currentTheme,
-        isDark: theme === "dark",
-        isLight: theme === "light",
-      }}
-    >
+    <ThemeContext.Provider value={themeContextValue}>
       <div
         className={`min-h-screen transition-colors duration-300 ${
-          theme === "dark" ? "bg-[#05010A]" : "bg-[#F8F5FF]"
+          isDarkMode ? "bg-[#05010A]" : "bg-[#F8F5FF]"
         }`}
       >
         {children}
@@ -52,22 +59,11 @@ export const ThemeProvider = ({ children }) => {
 
 // Custom hook to use theme context
 export const useTheme = () => {
-  const context = useThemeStore((state) => ({
-    theme: state.theme,
-    isDarkMode: state.isDarkMode(),
-    isLightMode: state.isLightMode(),
-    toggleTheme: state.toggleTheme,
-    setTheme: state.setTheme,
-  }));
+  const context = useContext(ThemeContext);
+  
+  if (!context) {
+    throw new Error("useTheme must be used within ThemeProvider");
+  }
 
-  const themeObject = context.theme === "dark" ? darkTheme : lightTheme;
-
-  return {
-    ...context,
-    themeObject,
-    colors: themeObject.colors,
-    gradients: themeObject.gradients,
-    glassmorphism: themeObject.glassmorphism,
-    shadows: themeObject.shadows,
-  };
+  return context;
 };

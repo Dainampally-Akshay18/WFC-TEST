@@ -1,6 +1,7 @@
-/**
+﻿/**
  * AUTH STORE (Zustand)
- * Manages authentication state globally
+ * Manages global authentication state
+ * Persists to localStorage for session continuity
  * Handles user info, tokens, and auth status
  */
 
@@ -9,7 +10,7 @@ import { persist } from "zustand/middleware";
 
 export const useAuthStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       // Initial state
       user: null,
       token: null,
@@ -17,46 +18,85 @@ export const useAuthStore = create(
       loading: false,
       error: null,
 
-      // Actions
-      setUser: (user) => set({ user, isAuthenticated: !!user }),
+      // ===== SETTERS =====
 
+      /**
+       * Set user data
+       */
+      setUser: (user) =>
+        set({
+          user,
+          isAuthenticated: !!user,
+        }),
+
+      /**
+       * Set authentication token
+       */
       setToken: (token) => set({ token }),
 
+      /**
+       * Set loading state
+       */
       setLoading: (loading) => set({ loading }),
 
+      /**
+       * Set error message
+       */
       setError: (error) => set({ error }),
 
-      // Login action
+      /**
+       * Clear error message
+       */
+      clearError: () => set({ error: null }),
+
+      // ===== ACTIONS =====
+
+      /**
+       * Login user
+       * Called after successful login API response
+       */
       login: (user, token) => {
         set({
           user,
           token,
           isAuthenticated: true,
           error: null,
+          loading: false,
         });
       },
 
-      // Logout action
+      /**
+       * Logout user
+       * Clears all auth state and localStorage
+       */
       logout: () => {
         set({
           user: null,
           token: null,
           isAuthenticated: false,
           error: null,
+          loading: false,
         });
       },
 
-      // Clear error
-      clearError: () => set({ error: null }),
-
-      // Update user
-      updateUser: (updates) =>
-        set((state) => ({
-          user: state.user ? { ...state.user, ...updates } : null,
-        })),
+      /**
+       * Update user profile
+       * Called after profile update API response
+       */
+      updateUser: (updates) => {
+        const current = get().user;
+        if (current) {
+          set({
+            user: {
+              ...current,
+              ...updates,
+            },
+          });
+        }
+      },
     }),
     {
-      name: "auth-store",
+      name: "auth-store", // localStorage key
       partialize: (state) => ({
         user: state.user,
         token: state.token,
@@ -65,3 +105,5 @@ export const useAuthStore = create(
     }
   )
 );
+
+export default useAuthStore;

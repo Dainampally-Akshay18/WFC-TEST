@@ -1,19 +1,22 @@
 /**
- * PROTECTED ROUTE
- * Route wrapper for authenticated routes
- * Redirects to login if not authenticated
+ * PROTECTED ROUTE COMPONENT
+ * Route guard for authenticated routes
+ * Redirects to landing page if not authenticated
  */
 
 import { Navigate } from "react-router-dom";
-import { useAuthStore } from "../store/authStore";
+import { useAuth } from "../hooks/useAuth";
 
-export const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuthStore();
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-purple-500 border-t-transparent" />
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="h-12 w-12 rounded-full border-4 border-purple-500 border-t-transparent animate-spin mx-auto mb-4" />
+          <p>Loading...</p>
+        </div>
       </div>
     );
   }

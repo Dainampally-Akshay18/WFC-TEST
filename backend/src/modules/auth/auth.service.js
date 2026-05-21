@@ -129,19 +129,20 @@ export const authService = {
       });
 
       // ✅ Log user login in audit trail
-      await auditService.logAction({
-        action: 'LOGIN',
-        performedBy: user._id,
-        performerRole: user.role,
-        targetId: user._id,
-        targetType: 'USER',
-        metadata: {
-          branch: user.branch,
-          email: user.email,
-          name: user.name,
-          role: user.role
-        }
-      });
+      // await auditService.logAction({
+      //   action: 'LOGIN',
+      //   performedBy: user._id,
+      //   performerRole: user.role,
+      //   targetId: user._id,
+      //   targetType: 'USER',
+      //   metadata: {
+      //     branch: user.branch,
+      //     email: user.email,
+      //     name: user.name,
+      //     role: user.role,
+      //     status:user.status
+      //   }
+      // });
 
       return {
         token,

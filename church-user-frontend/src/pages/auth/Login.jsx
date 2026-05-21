@@ -48,7 +48,6 @@ const Login = () => {
       
       if (response.success) {
         const { token, user } = response.data;
-        console.log(user)
         
         // Update auth store with login data
         login(user, token);

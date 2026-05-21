@@ -5,6 +5,7 @@
  */
 
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useTheme } from "../../hooks/useTheme";
 import { Clock, LogOut, CheckCircle } from "lucide-react";
@@ -12,7 +13,19 @@ import { Clock, LogOut, CheckCircle } from "lucide-react";
 const WaitApproval = () => {
   const navigate = useNavigate();
   const { colors, glassmorphism, isDarkMode } = useTheme();
-  const { logout, user } = useAuth();
+  const { logout, user, isAuthenticated } = useAuth();
+
+  // Redirect approved users to home
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/auth/login", { replace: true });
+      return;
+    }
+
+    if (user?.status?.toUpperCase() === "APPROVED") {
+      navigate("/home", { replace: true });
+    }
+  }, [user, isAuthenticated, navigate]);
 
   const handleLogout = () => {
     logout();

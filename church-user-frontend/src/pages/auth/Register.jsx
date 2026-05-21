@@ -26,7 +26,7 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    branch: "Main", // Default branch
+    branch: "", // No default - user must select
   });
 
   const handleChange = (e) => {
@@ -41,8 +41,14 @@ const Register = () => {
     e.preventDefault();
 
     // Validation
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword || !formData.branch) {
       setError("Please fill in all fields");
+      return;
+    }
+
+    // Validate branch selection
+    if (formData.branch !== "BRANCH1" && formData.branch !== "BRANCH2") {
+      setError("Please select a valid branch");
       return;
     }
 
@@ -69,10 +75,10 @@ const Register = () => {
 
       if (response.success) {
         setSubmitted(true);
-        // Redirect to wait-approval after 3 seconds
+        // Redirect to wait-approval immediately
         setTimeout(() => {
           navigate("/wait-approval", { replace: true });
-        }, 3000);
+        }, 2000);
       } else {
         setError(response.error?.message || "Registration failed");
       }
@@ -135,7 +141,7 @@ const Register = () => {
           </div>
 
           <p style={{ color: colors.text.secondary }} className="text-sm">
-            Redirecting to approval page in 3 seconds...
+            Redirecting in 2 seconds...
           </p>
         </div>
       </AuthLayout>
@@ -225,25 +231,26 @@ const Register = () => {
         {/* Branch Selection */}
         <div>
           <label style={{ color: colors.text.primary }} className="block text-sm font-medium mb-2">
-            Branch
+            Branch <span style={{ color: colors.accent.pink }}>*</span>
           </label>
           <select
             name="branch"
             value={formData.branch}
             onChange={handleChange}
             disabled={loading}
+            required
             style={{
               background: glassmorphism.input.background,
               border: `1px solid ${glassmorphism.input.border}`,
-              color: colors.text.primary,
+              color: formData.branch ? colors.text.primary : colors.text.muted,
             }}
             className="w-full rounded-lg px-4 py-3 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50"
           >
-            <option value="Main">Main Branch</option>
-            <option value="North">North Branch</option>
-            <option value="South">South Branch</option>
-            <option value="East">East Branch</option>
-            <option value="West">West Branch</option>
+            <option value="" disabled style={{ color: colors.text.muted }}>
+              Select your branch
+            </option>
+            <option value="BRANCH1">Branch 1</option>
+            <option value="BRANCH2">Branch 2</option>
           </select>
         </div>
 

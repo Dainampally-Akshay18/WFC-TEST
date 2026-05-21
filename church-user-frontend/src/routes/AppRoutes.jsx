@@ -32,12 +32,17 @@ import CreatePrayer from "../pages/prayers/CreatePrayer";
 import MyPrayers from "../pages/prayers/MyPrayers";
 import Notifications from "../pages/notifications/Notifications";
 import NotificationDetails from "../pages/notifications/NotificationDetails";
+import WaitApproval from "../pages/wait-approval/WaitApproval";
+import NotFound from "../pages/errors/NotFound";
 
 const AppRoutes = () => {
   return (
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<LandingPage />} />
+
+      {/* Wait Approval Route - Authenticated but not approved */}
+      <Route path="/wait-approval" element={<WaitApproval />} />
 
       {/* Auth Routes */}
       <Route
@@ -246,23 +251,7 @@ const AppRoutes = () => {
       />
 
       {/* 404 Fallback */}
-      <Route
-        path="*"
-        element={
-          <div
-            style={{ color: "#fff" }}
-            className="flex items-center justify-center h-screen"
-          >
-            <div className="text-center">
-              <h1 className="text-6xl font-bold">404</h1>
-              <p className="text-xl mt-4">Page not found</p>
-              <a href="/" className="mt-6 inline-block text-purple-500 hover:underline">
-                Go back home
-              </a>
-            </div>
-          </div>
-        }
-      />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

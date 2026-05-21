@@ -8,15 +8,20 @@
  * Height: py-3 (mobile) / py-4 (desktop) for consistent sizing
  */
 
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTheme } from "../context/ThemeProvider";
 import { useUIStore } from "../store/uiStore";
 import { useAuth } from "../hooks/useAuth";
 import { Sun, Moon, Menu, X } from "lucide-react";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { isDarkMode, toggleTheme, colors, glassmorphism, shadows } = useTheme();
   const { toggleSidebar, sidebarOpen } = useUIStore();
   const { isAuthenticated } = useAuth();
+
+  const isLandingPage = location.pathname === "/";
 
   const navStyle = {
     background: glassmorphism.nav.background,
@@ -84,8 +89,70 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* RIGHT: Theme Toggle */}
+        {/* RIGHT: Auth Buttons + Theme Toggle */}
         <div className="flex items-center gap-2 md:gap-4">
+          {/* Landing Page Auth Buttons */}
+          {isLandingPage && !isAuthenticated && (
+            <>
+              <button
+                onClick={() => navigate("/auth/login")}
+                className="px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-all duration-200"
+                style={{
+                  color: colors.text.primary,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = isDarkMode 
+                    ? "rgba(255,255,255,0.1)" 
+                    : "rgba(109,40,217,0.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                }}
+              >
+                Login
+              </button>
+              <button
+                onClick={() => navigate("/auth/register")}
+                className="px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-all duration-200"
+                style={{
+                  background: `linear-gradient(135deg, ${colors.accent.purple}, ${colors.accent.pink})`,
+                  color: colors.text.primary,
+                  boxShadow: `0 0 15px ${colors.glow.purple}`,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.05)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                }}
+              >
+                Signup
+              </button>
+            </>
+          )}
+
+          {/* Logged In User - Home Button */}
+          {isLandingPage && isAuthenticated && (
+            <button
+              onClick={() => navigate("/home")}
+              className="px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-all duration-200"
+              style={{
+                background: `linear-gradient(135deg, ${colors.accent.purple}, ${colors.accent.pink})`,
+                color: colors.text.primary,
+                boxShadow: `0 0 15px ${colors.glow.purple}`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+            >
+              Home
+            </button>
+          )}
+
+          {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
             className="rounded-lg p-2.5 md:p-3 transition-all duration-200 group"

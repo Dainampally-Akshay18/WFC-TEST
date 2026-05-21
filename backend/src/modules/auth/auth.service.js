@@ -151,6 +151,7 @@ export const authService = {
           email: user.email,
           role: user.role,
           branch: user.branch,
+          status:user.status
         },
       };
     } catch (error) {

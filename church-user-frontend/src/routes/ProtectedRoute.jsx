@@ -1,14 +1,15 @@
 /**
  * PROTECTED ROUTE COMPONENT
  * Route guard for authenticated routes
- * Redirects to landing page if not authenticated
+ * Redirects to login if not authenticated
+ * Redirects to wait-approval if user is not approved
  */
 
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, user, loading } = useAuth();
 
   if (loading) {
     return (
@@ -23,6 +24,11 @@ const ProtectedRoute = ({ children }) => {
 
   if (!isAuthenticated) {
     return <Navigate to="/auth/login" replace />;
+  }
+
+  // Check if user is approved (case-insensitive)
+  if (user?.status?.toUpperCase() !== "APPROVED") {
+    return <Navigate to="/wait-approval" replace />;
   }
 
   return children;

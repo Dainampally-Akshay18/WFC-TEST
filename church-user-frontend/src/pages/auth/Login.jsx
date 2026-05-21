@@ -48,12 +48,17 @@ const Login = () => {
       
       if (response.success) {
         const { token, user } = response.data;
+        console.log(user)
         
         // Update auth store with login data
         login(user, token);
         
-        // Redirect to home dashboard
-        navigate("/home", { replace: true });
+        // Redirect based on approval status (case-insensitive)
+        if (user.status?.toUpperCase() === "APPROVED") {
+          navigate("/home", { replace: true });
+        } else {
+          navigate("/wait-approval", { replace: true });
+        }
       } else {
         setError(response.error?.message || "Login failed");
       }

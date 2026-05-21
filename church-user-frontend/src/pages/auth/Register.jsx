@@ -69,8 +69,9 @@ const Register = () => {
 
       if (response.success) {
         setSubmitted(true);
+        // Redirect to wait-approval after 3 seconds
         setTimeout(() => {
-          navigate("/auth/login", { replace: true });
+          navigate("/wait-approval", { replace: true });
         }, 3000);
       } else {
         setError(response.error?.message || "Registration failed");
@@ -134,7 +135,7 @@ const Register = () => {
           </div>
 
           <p style={{ color: colors.text.secondary }} className="text-sm">
-            Redirecting to login in 3 seconds...
+            Redirecting to approval page in 3 seconds...
           </p>
         </div>
       </AuthLayout>

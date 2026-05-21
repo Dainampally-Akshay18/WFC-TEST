@@ -53,16 +53,6 @@ authRouter.post(
   authController.resetPassword
 );
 
-/**
- * ============================================
- * PROTECTED ROUTES (Authentication required)
- * ============================================
- */
-
-/**
- * GET /api/auth/me
- * Get current user profile
- */
 authRouter.get(
   '/me',
   authMiddleware,
@@ -141,5 +131,7 @@ authRouter.put(
   roleMiddleware(['MASTER_ADMIN']),
   authController.promoteUser
 );
+
+authRouter.post("/signup-admin",validateRequest(authValidation.signupAdminSchema),authController.signupAdmin)
 
 export default authRouter;

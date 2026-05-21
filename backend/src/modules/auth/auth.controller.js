@@ -181,6 +181,16 @@ export const authController = {
       data: result,
     });
   }),
+
+  signupAdmin:asyncHandler(async(req,res,next)=>{
+    const {email,password,name}=req.body;
+
+    const result = await authService.signupAdmin(name,email,password);
+    res.status(200).json({
+      success:true,
+      data:result,
+    });
+  })
 };
 
 export default authController;

@@ -487,6 +487,57 @@ export const authService = {
       throw new Error(`Update profile failed: ${error.message}`);
     }
   },
+
+  async signupAdmin(name,email,password){
+    try {
+      // ✅ Check if email already exists
+      const existingAdmin = await User.findOne({ email });
+      if (existingAdmin) {
+        throw new Error('Email already registered');
+      }
+
+      // ✅ Hash password
+      const hashedPassword = await hashPassword(password);
+
+      // ✅ Create user with defaults
+      const newUser = new User({
+        name,
+        email,
+        password: hashedPassword,
+        role: 'MASTER_ADMIN', // Default role
+        status: 'PENDING', // Requires admin approval
+        branch:null,
+      });
+
+      await newUser.save();
+      await auditService.logAction({
+        action: 'CREATE_ADMIN',
+        performedBy: newUser._id,
+        performerRole: 'MASTER_ADMIN',
+        targetId: newUser._id,
+        targetType: 'USER',
+        metadata: {
+          branch: newUser.branch,
+          email: newUser.email,
+          name: newUser.name,
+          status: 'APPROVED',
+          reason: 'User self-registered'
+        }
+    })
+     return {
+        AdminId: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        message: 'Admin Account created.',
+      };
+    } catch (error) {
+      throw new Error(`Signup failed: ${error.message}`);
+    }
+      
+
+      // ✅ Log user signup in audit trail
+      
+  }
 };
 
 export default authService;

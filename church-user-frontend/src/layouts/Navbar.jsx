@@ -62,11 +62,14 @@ const Navbar = () => {
           <div className="flex flex-col items-start gap-0">
             <div className="text-lg md:text-2xl font-bold">
               <span
+                key={`wfc-logo-${isDarkMode}`}
                 style={{
                   background: `linear-gradient(135deg, ${colors.accent.purple}, ${colors.accent.pink})`,
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
+                  display: "inline-block",
+                  minWidth: "100%",
                 }}
               >
                 WFC

@@ -42,13 +42,13 @@ const MainLayout = ({ children }) => {
       {/* Navbar - z-40 */}
       <Navbar />
 
-      {/* Main Content */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar - includes mobile overlay and sidebar */}
+      {/* Main Content Container */}
+      <div className="relative flex flex-1">
+        {/* Sidebar - Fixed on all breakpoints */}
         <Sidebar />
 
-        {/* Content Area */}
-        <main className="flex-1 overflow-auto">
+        {/* Content Area - Scrolls independently, offset by sidebar on desktop */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden md:ml-64">
           <div className="mx-auto w-full max-w-7xl px-4 py-6 md:px-6 md:py-8">
             {children}
           </div>

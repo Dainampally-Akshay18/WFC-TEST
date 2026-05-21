@@ -169,8 +169,8 @@ const Sidebar = () => {
       {/* SIDEBAR - z-60 on mobile, relative on desktop */}
       <aside
         style={sidebarStyle}
-        className={`fixed left-0 z-60 h-[calc(100vh-3.5rem)] w-64 transform overflow-y-auto border-r transition-transform duration-300 ease-in-out md:relative md:h-[calc(100vh-3.5rem)] md:z-auto md:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed left-0 z-60 h-[calc(100vh-3.5rem)] w-64 transform overflow-y-auto border-r transition-transform duration-300 ease-in-out md:translate-x-0 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
         {/* MOBILE HEADER - Close Button and Title */}

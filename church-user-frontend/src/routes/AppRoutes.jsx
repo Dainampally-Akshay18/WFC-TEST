@@ -26,6 +26,12 @@ import Sermons from "../pages/sermons/Sermons";
 import SermonDetails from "../pages/sermons/SermonDetails";
 import WatchSermon from "../pages/sermons/WatchSermon";
 import SermonCategory from "../pages/sermons/SermonCategory";
+import Prayers from "../pages/prayers/Prayers";
+import PrayerDetails from "../pages/prayers/PrayerDetails";
+import CreatePrayer from "../pages/prayers/CreatePrayer";
+import MyPrayers from "../pages/prayers/MyPrayers";
+import Notifications from "../pages/notifications/Notifications";
+import NotificationDetails from "../pages/notifications/NotificationDetails";
 
 const AppRoutes = () => {
   return (
@@ -173,7 +179,37 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <MainLayout>
-              <div style={{ color: "#fff" }}>Prayers Page - Coming Soon</div>
+              <Prayers />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/prayers/:id"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <PrayerDetails />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/prayers/create"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <CreatePrayer />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/prayers/my-prayers"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <MyPrayers />
             </MainLayout>
           </ProtectedRoute>
         }
@@ -183,7 +219,17 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <MainLayout>
-              <div style={{ color: "#fff" }}>Notifications Page - Coming Soon</div>
+              <Notifications />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/notifications/:id"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <NotificationDetails />
             </MainLayout>
           </ProtectedRoute>
         }

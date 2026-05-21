@@ -70,12 +70,15 @@ export const API_ENDPOINTS = {
     CREATE: `${BASE_URL}/prayers`,
     UPDATE: (id) => `${BASE_URL}/prayers/${id}`,
     DELETE: (id) => `${BASE_URL}/prayers/${id}`,
+    TOGGLE_PRAY: (id) => `${BASE_URL}/prayers/${id}/pray`,
+    UPDATE_STATUS: (id) => `${BASE_URL}/prayers/${id}/status`,
     GET_MY_PRAYERS: `${BASE_URL}/prayers/my-prayers`,
   },
 
   // NOTIFICATION ENDPOINTS
   NOTIFICATION: {
     GET_ALL: `${BASE_URL}/notifications`,
+    GET_UNREAD_COUNT: `${BASE_URL}/notifications/unread-count`,
     GET_ONE: (id) => `${BASE_URL}/notifications/${id}`,
     MARK_READ: (id) => `${BASE_URL}/notifications/${id}/read`,
     MARK_ALL_READ: `${BASE_URL}/notifications/read-all`,

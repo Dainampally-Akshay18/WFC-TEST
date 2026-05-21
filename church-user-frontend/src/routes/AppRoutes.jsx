@@ -20,6 +20,8 @@ import ResetPassword from "../pages/auth/ResetPassword";
 import VerifyOTP from "../pages/auth/VerifyOTP";
 import Blogs from "../pages/blogs/Blogs";
 import BlogDetails from "../pages/blogs/BlogDetails";
+import Events from "../pages/events/Events";
+import EventDetails from "../pages/events/EventDetails";
 
 const AppRoutes = () => {
   return (
@@ -117,7 +119,17 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <MainLayout>
-              <div style={{ color: "#fff" }}>Events Page - Coming Soon</div>
+              <Events />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/events/:id"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <EventDetails />
             </MainLayout>
           </ProtectedRoute>
         }

@@ -2,11 +2,12 @@
  * APP COMPONENT
  * Root component wrapping all providers and routes
  * Sets up React Query, theme system, and routing
+ * Applies theme-aware background colors
  */
 
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider } from "./context/ThemeProvider";
+import { ThemeProvider, useTheme } from "./context/ThemeProvider";
 import AppRoutes from "./routes/AppRoutes";
 import { appConfig } from "./config/app.config";
 
@@ -22,12 +23,29 @@ const queryClient = new QueryClient({
   },
 });
 
+/**
+ * Theme-aware app wrapper
+ * Applies background colors based on current theme
+ */
+function AppContent() {
+  const { colors } = useTheme();
+
+  return (
+    <div 
+      className="min-h-screen transition-colors duration-300"
+      style={{ background: colors.background.primary }}
+    >
+      <AppRoutes />
+    </div>
+  );
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ThemeProvider>
-          <AppRoutes />
+          <AppContent />
         </ThemeProvider>
       </BrowserRouter>
     </QueryClientProvider>

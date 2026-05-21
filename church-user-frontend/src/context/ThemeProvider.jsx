@@ -1,7 +1,15 @@
 /**
  * THEME PROVIDER CONTEXT
- * Wraps app with theme system
- * Manages dark/light mode and applies theme to UI
+ * Wraps app with centralized theme system
+ * Manages dark/light mode and theme-driven UI
+ * 
+ * Provides:
+ * - isDarkMode / isLightMode flags
+ * - toggleTheme() and setTheme(theme) actions
+ * - colors: centralized color palette
+ * - glassmorphism: frosted glass effects
+ * - shadows: shadow system
+ * - gradients: gradient definitions
  */
 
 import { useEffect, createContext, useContext } from "react";
@@ -46,13 +54,7 @@ export const ThemeProvider = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={themeContextValue}>
-      <div
-        className={`min-h-screen transition-colors duration-300 ${
-          isDarkMode ? "bg-[#05010A]" : "bg-[#F8F5FF]"
-        }`}
-      >
-        {children}
-      </div>
+      {children}
     </ThemeContext.Provider>
   );
 };

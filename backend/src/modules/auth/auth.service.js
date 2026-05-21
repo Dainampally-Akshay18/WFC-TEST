@@ -105,15 +105,16 @@ export const authService = {
     try {
       // ✅ Find user and include password (it's hidden by default)
       const user = await User.findOne({ email }).select('+password');
+      // console.log(user)
 
       if (!user) {
         throw new Error('Invalid email or password');
       }
 
       // ✅ CRITICAL: Check if user is approved
-      if (user.status !== 'APPROVED') {
-        throw new Error('Your account is not approved yet. Please wait for admin approval.');
-      }
+      // if (user.status !== 'APPROVED') {
+      //   throw new Error('Your account is not approved yet. Please wait for admin approval.');
+      // }
 
       // ✅ Verify password
       const isPasswordValid = await comparePassword(password, user.password);

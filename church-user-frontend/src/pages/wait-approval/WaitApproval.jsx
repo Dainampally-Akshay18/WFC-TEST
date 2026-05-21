@@ -16,15 +16,15 @@ const WaitApproval = () => {
   const { logout, user, isAuthenticated } = useAuth();
 
   // Redirect approved users to home
+  // ✅ FRONTEND FIX: Only redirect if they are fully approved. 
+  // Do NOT kick out unauthenticated users, so they can actually see this screen!
+  
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/auth/login", { replace: true });
-      return;
-    }
-
-    if (user?.status?.toUpperCase() === "APPROVED") {
+    // If they magically get approved while on this screen, send them home
+    if (isAuthenticated && user?.status?.toUpperCase() === "APPROVED") {
       navigate("/home", { replace: true });
     }
+    // NOTICE: We removed the block that kicks !isAuthenticated users back to login.
   }, [user, isAuthenticated, navigate]);
 
   const handleLogout = () => {

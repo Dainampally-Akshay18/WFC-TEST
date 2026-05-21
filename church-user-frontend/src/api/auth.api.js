@@ -37,6 +37,8 @@ export const authAPI = {
    * POST /api/auth/login
    */
   login: async (email, password) => {
+    // console.log("Sending backend email to ",email)
+    // console.log("Sending frontend password to ",password)
     const response = await apiClient.post(API_ENDPOINTS.LOGIN, {
       email,
       password,

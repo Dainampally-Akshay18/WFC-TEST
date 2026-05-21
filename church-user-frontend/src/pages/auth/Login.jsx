@@ -52,7 +52,7 @@ const Login = () => {
         // Update auth store with login data
         login(user, token);
         
-        // Redirect based on approval status (case-insensitive)
+        // Redirect based on approval status
         if (user.status?.toUpperCase() === "APPROVED") {
           navigate("/home", { replace: true });
         } else {
@@ -62,10 +62,16 @@ const Login = () => {
         setError(response.error?.message || "Login failed");
       }
     } catch (err) {
-      const errorMessage =
-        err.error?.message ||
-        err.message ||
-        "An error occurred during login";
+      // ✅ FRONTEND FIX: Axios jumps here when the backend says "Not Approved"
+      const errorMessage = err.error?.message || err.message || err.response?.data?.message || "An error occurred during login";
+      
+      // If the backend error message mentions anything about approval, send them to the waiting room!
+      const lowerError = errorMessage.toLowerCase();
+      if (lowerError.includes("not approved") || lowerError.includes("wait for admin") || lowerError.includes("pending")) {
+        navigate("/wait-approval", { replace: true });
+        return; // Stop execution here
+      }
+
       setError(errorMessage);
       console.error("Login error:", err);
     } finally {

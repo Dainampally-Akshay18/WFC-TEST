@@ -28,8 +28,8 @@ export const ROUTES = {
     ROOT: "/sermons",
     LIST: "/sermons",
     DETAILS: (id) => `/sermons/${id}`,
-    CATEGORY: (category) => `/sermons/category/${category}`,
-    WATCH: (id) => `/sermons/${id}/watch`,
+    WATCH: (id) => `/sermons/watch/${id}`,
+    CATEGORY: "/sermons/category",
   },
 
   // BLOG ROUTES

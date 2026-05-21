@@ -34,8 +34,12 @@ export const API_ENDPOINTS = {
     CREATE: `${BASE_URL}/sermons`,
     UPDATE: (id) => `${BASE_URL}/sermons/${id}`,
     DELETE: (id) => `${BASE_URL}/sermons/${id}`,
+    PUBLISH: (id) => `${BASE_URL}/sermons/${id}/publish`,
+    UNPUBLISH: (id) => `${BASE_URL}/sermons/${id}/unpublish`,
     GET_CATEGORIES: `${BASE_URL}/sermons/categories`,
     CREATE_CATEGORY: `${BASE_URL}/sermons/categories`,
+    UPDATE_CATEGORY: (id) => `${BASE_URL}/sermons/categories/${id}`,
+    DELETE_CATEGORY: (id) => `${BASE_URL}/sermons/categories/${id}`,
   },
 
   // BLOG ENDPOINTS

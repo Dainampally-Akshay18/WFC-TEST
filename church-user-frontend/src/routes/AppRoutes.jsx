@@ -22,6 +22,10 @@ import Blogs from "../pages/blogs/Blogs";
 import BlogDetails from "../pages/blogs/BlogDetails";
 import Events from "../pages/events/Events";
 import EventDetails from "../pages/events/EventDetails";
+import Sermons from "../pages/sermons/Sermons";
+import SermonDetails from "../pages/sermons/SermonDetails";
+import WatchSermon from "../pages/sermons/WatchSermon";
+import SermonCategory from "../pages/sermons/SermonCategory";
 
 const AppRoutes = () => {
   return (
@@ -89,7 +93,37 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <MainLayout>
-              <div style={{ color: "#fff" }}>Sermons Page - Coming Soon</div>
+              <Sermons />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/sermons/:id"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <SermonDetails />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/sermons/watch/:id"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <WatchSermon />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/sermons/category"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <SermonCategory />
             </MainLayout>
           </ProtectedRoute>
         }

@@ -18,6 +18,8 @@ import Register from "../pages/auth/Register";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ResetPassword from "../pages/auth/ResetPassword";
 import VerifyOTP from "../pages/auth/VerifyOTP";
+import Blogs from "../pages/blogs/Blogs";
+import BlogDetails from "../pages/blogs/BlogDetails";
 
 const AppRoutes = () => {
   return (
@@ -95,7 +97,17 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <MainLayout>
-              <div style={{ color: "#fff" }}>Blogs Page - Coming Soon</div>
+              <Blogs />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/blogs/:slug"
+        element={
+          <ProtectedRoute>
+            <MainLayout>
+              <BlogDetails />
             </MainLayout>
           </ProtectedRoute>
         }

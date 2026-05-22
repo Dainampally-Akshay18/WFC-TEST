@@ -1,18 +1,4 @@
-import { refreshToken, setToken, clearTokens } from '../utils/tokenManager';
-
-let isRefreshing = false;
-let failedQueue = [];
-
-const processQueue = (error, token = null) => {
-  failedQueue.forEach((prom) => {
-    if (error) {
-      prom.reject(error);
-    } else {
-      prom.resolve(token);
-    }
-  });
-  failedQueue = [];
-};
+import { clearTokens } from '../utils/tokenManager';
 
 export const refreshInterceptor = (axiosInstance) => {
   axiosInstance.interceptors.response.use(
@@ -20,34 +6,14 @@ export const refreshInterceptor = (axiosInstance) => {
     async (error) => {
       const originalRequest = error.config;
 
+      // If 401 and not already retried, clear tokens and redirect to login
       if (error.response?.status === 401 && !originalRequest._retry) {
-        if (isRefreshing) {
-          return new Promise((resolve, reject) => {
-            failedQueue.push({ resolve, reject });
-          })
-            .then((token) => {
-              originalRequest.headers.Authorization = `Bearer ${token}`;
-              return axiosInstance(originalRequest);
-            })
-            .catch((err) => Promise.reject(err));
-        }
-
         originalRequest._retry = true;
-        isRefreshing = true;
-
-        try {
-          const newToken = await refreshToken();
-          setToken(newToken);
-          processQueue(null, newToken);
-          originalRequest.headers.Authorization = `Bearer ${newToken}`;
-          return axiosInstance(originalRequest);
-        } catch (err) {
-          processQueue(err, null);
-          clearTokens();
+        clearTokens();
+        
+        // Redirect to login page
+        if (typeof window !== 'undefined') {
           window.location.href = '/login';
-          return Promise.reject(err);
-        } finally {
-          isRefreshing = false;
         }
       }
 

@@ -29,7 +29,7 @@ const AppRouter = () => {
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.SIGNUP} element={<Signup />} />
             <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} />
-            <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path={ROUTES.VERIFY_OTP} element={<VerifyOtp />} />
           </Route>
         </Route>
@@ -38,6 +38,7 @@ const AppRouter = () => {
         <Route element={<ProtectedRoute />}>
           <Route element={<AdminLayout />}>
             <Route path={ROUTES.DASHBOARD} element={<DashboardHome />} />
+            <Route path="/admin/dashboard" element={<DashboardHome />} />
             <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
           </Route>
         </Route>

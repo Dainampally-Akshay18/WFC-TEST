@@ -8,11 +8,14 @@ export const authService = {
   
   logout: () => axiosClient.post(AUTH_ENDPOINTS.LOGOUT),
   
-  refreshToken: (refreshToken) => axiosClient.post(AUTH_ENDPOINTS.REFRESH, { refreshToken }),
-  
   forgotPassword: (email) => axiosClient.post(AUTH_ENDPOINTS.FORGOT_PASSWORD, { email }),
   
-  resetPassword: (token, password) => axiosClient.post(AUTH_ENDPOINTS.RESET_PASSWORD, { token, password }),
+  resetPassword: (token, newPassword) => {
+    return axiosClient.post(`/auth/reset-password/${token}`, { 
+      newPassword,
+      confirmPassword: newPassword 
+    });
+  },
   
   verifyOtp: (email, otp) => axiosClient.post(AUTH_ENDPOINTS.VERIFY_OTP, { email, otp }),
   
@@ -21,4 +24,6 @@ export const authService = {
   changePassword: (oldPassword, newPassword) => axiosClient.post(AUTH_ENDPOINTS.CHANGE_PASSWORD, { oldPassword, newPassword }),
   
   getMe: () => axiosClient.get(AUTH_ENDPOINTS.ME),
+  
+  updateProfile: (data) => axiosClient.put(AUTH_ENDPOINTS.UPDATE_PROFILE, data),
 };

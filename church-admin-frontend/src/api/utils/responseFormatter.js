@@ -1,8 +1,11 @@
 export const formatResponse = (response) => {
+  // Backend returns { success: true, data: {...} }
+  if (response.data && typeof response.data === 'object') {
+    return response.data;
+  }
+  
   return {
-    data: response.data?.data || response.data,
-    message: response.data?.message,
-    status: response.status,
-    success: response.data?.success !== false,
+    data: response.data,
+    success: true,
   };
 };

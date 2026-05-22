@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import { authService } from '../api/services/auth.service';
-import { setToken, setRefreshToken, clearTokens, getToken } from '../api/utils/tokenManager';
+import { setToken, clearTokens, getToken } from '../api/utils/tokenManager';
 
 export const AuthContext = createContext(null);
 
@@ -23,6 +23,8 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       clearTokens();
+      setUser(null);
+      setIsAuthenticated(false);
     } finally {
       setLoading(false);
     }
@@ -30,21 +32,29 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     const response = await authService.login(credentials);
-    setToken(response.data.accessToken);
-    setRefreshToken(response.data.refreshToken);
-    setUser(response.data.user);
+    const { token, user: userData } = response.data;
+    
+    setToken(token);
+    setUser(userData);
     setIsAuthenticated(true);
+    
     return response;
   };
 
   const logout = async () => {
     try {
       await authService.logout();
+    } catch (error) {
+      // Ignore logout errors
     } finally {
       clearTokens();
       setUser(null);
       setIsAuthenticated(false);
     }
+  };
+
+  const updateUser = (userData) => {
+    setUser(prev => ({ ...prev, ...userData }));
   };
 
   const value = {
@@ -54,6 +64,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     checkAuth,
+    updateUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -2,14 +2,14 @@ import { useSidebarStore } from '../../../../store/sidebarStore';
 
 const LayoutShell = ({ children }) => {
   const { isOpen, isCollapsed } = useSidebarStore();
-  const sidebarWidth = !isOpen ? 0 : isCollapsed ? 80 : 256;
+  const sidebarWidth = !isOpen ? 0 : isCollapsed ? 72 : 260;
 
   return (
     <div
-      className="min-h-screen transition-all duration-300"
+      className="min-h-screen transition-all duration-300 flex flex-col"
       style={{
         marginLeft: `${sidebarWidth}px`,
-        marginTop: '64px',
+        paddingTop: 'var(--navbar-height)',
         backgroundColor: 'var(--bg-base)',
       }}
     >

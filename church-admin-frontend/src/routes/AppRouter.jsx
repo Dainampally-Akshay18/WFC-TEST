@@ -16,6 +16,16 @@ import VerifyOtp from '../pages/auth/VerifyOtp';
 // Dashboard Pages
 import DashboardHome from '../pages/dashboard/DashboardHome';
 
+// Admin Placeholder Pages
+import UserList from '../pages/users/UserList';
+import EventList from '../pages/events/EventList';
+import BlogList from '../pages/blogs/BlogList';
+import SermonList from '../pages/sermons/SermonList';
+import PrayerList from '../pages/prayers/PrayerList';
+import NotificationList from '../pages/notifications/NotificationList';
+import AuditLogs from '../pages/audit-logs/AuditLogs';
+import GeneralSettings from '../pages/settings/GeneralSettings';
+
 // Error Pages
 import NotFound from '../pages/errors/NotFound';
 
@@ -23,7 +33,10 @@ const AppRouter = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes */}
+        {/* Root redirect */}
+        <Route path="/" element={<Navigate to={ROUTES.LOGIN} replace />} />
+
+        {/* ─── Public / Auth Routes ─── */}
         <Route element={<PublicRoute />}>
           <Route element={<AuthLayout />}>
             <Route path={ROUTES.LOGIN} element={<Login />} />
@@ -34,16 +47,50 @@ const AppRouter = () => {
           </Route>
         </Route>
 
-        {/* Protected Routes */}
+        {/* ─── Protected / Admin Routes ─── */}
         <Route element={<ProtectedRoute />}>
           <Route element={<AdminLayout />}>
+            {/* Dashboard */}
             <Route path={ROUTES.DASHBOARD} element={<DashboardHome />} />
+            <Route path="/dashboard" element={<DashboardHome />} />
             <Route path="/admin/dashboard" element={<DashboardHome />} />
-            <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
+
+            {/* Users */}
+            <Route path={ROUTES.USERS} element={<UserList />} />
+            <Route path="/admin/users" element={<UserList />} />
+
+            {/* Events */}
+            <Route path={ROUTES.EVENTS} element={<EventList />} />
+            <Route path="/admin/events" element={<EventList />} />
+
+            {/* Blogs */}
+            <Route path={ROUTES.BLOGS} element={<BlogList />} />
+            <Route path="/admin/blogs" element={<BlogList />} />
+
+            {/* Sermons */}
+            <Route path={ROUTES.SERMONS} element={<SermonList />} />
+            <Route path="/admin/sermons" element={<SermonList />} />
+
+            {/* Prayers */}
+            <Route path={ROUTES.PRAYERS} element={<PrayerList />} />
+            <Route path="/admin/prayers" element={<PrayerList />} />
+
+            {/* Notifications */}
+            <Route path={ROUTES.NOTIFICATIONS} element={<NotificationList />} />
+            <Route path="/admin/notifications" element={<NotificationList />} />
+
+            {/* Audit Logs */}
+            <Route path={ROUTES.AUDIT_LOGS} element={<AuditLogs />} />
+            <Route path="/admin/audits" element={<AuditLogs />} />
+
+            {/* Settings */}
+            <Route path={ROUTES.SETTINGS} element={<GeneralSettings />} />
+            <Route path={ROUTES.SETTINGS_GENERAL} element={<GeneralSettings />} />
+            <Route path="/admin/settings" element={<GeneralSettings />} />
           </Route>
         </Route>
 
-        {/* Error Routes */}
+        {/* ─── Error / Fallback Routes ─── */}
         <Route element={<MinimalLayout />}>
           <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
           <Route path="*" element={<NotFound />} />

@@ -390,6 +390,218 @@ async function signupUser() {
 
 ---
 
+### Admin Signup
+
+# API Name
+**Admin Signup**
+
+# Endpoint
+```
+POST /api/auth/signup-admin
+```
+
+# Controller Function
+```
+authController.signupAdmin()
+```
+
+# Purpose
+
+This endpoint allows a new MASTER_ADMIN account to be created using the public auth flow. It accepts the same core identity fields as regular signup, but does not require a branch and stores the account with a MASTER_ADMIN role.
+
+**Business Context:**
+- Creates the initial admin account for the system
+- Uses the same public auth module and validation pipeline
+- Stores the account as a MASTER_ADMIN user
+- Logs admin creation in the audit trail
+
+# Authentication / Authorization
+
+| Aspect | Value |
+|--------|-------|
+| **Route Type** | Public (No authentication required) |
+| **JWT Required** | No |
+| **Bearer Token** | No |
+| **Required Roles** | N/A |
+
+# Middleware Used
+
+| Middleware | Purpose |
+|------------|---------|
+| `validateRequest(authValidation.signupAdminSchema)` | Validates request body using Joi schema |
+
+# Request Headers
+
+```
+Content-Type: application/json
+```
+
+# Route Parameters
+
+None
+
+# Query Parameters
+
+None
+
+# Request Body
+
+```json
+{
+  "name": "Admin User",
+  "email": "admin@example.com",
+  "password": "SecurePassword123"
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string | Yes | Admin user's full name |
+| `email` | string | Yes | Admin user's email address |
+| `password` | string | Yes | Admin account password |
+
+# Validation Rules
+
+| Field | Rules |
+|-------|-------|
+| `name` | Min 2 chars, Max 50 chars, Required |
+| `email` | Valid email format, Unique in database, Required |
+| `password` | Min 6 chars, Max 100 chars, Required |
+
+**Validation Schema:**
+```javascript
+signupAdminSchema: Joi.object({
+  name: Joi.string().min(2).max(50).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).max(100).required(),
+})
+```
+
+# Success Response
+
+**Status Code:** `200 OK`
+
+```json
+{
+  "success": true,
+  "data": {
+    "AdminId": "507f1f77bcf86cd799439011",
+    "name": "Admin User",
+    "email": "admin@example.com",
+    "message": "Admin Account created."
+  }
+}
+```
+
+# Error Responses
+
+### 400 Bad Request - Validation Error
+
+```json
+{
+  "success": false,
+  "error": {
+    "status": 400,
+    "message": "\"name\" must be at least 2 characters long"
+  }
+}
+```
+
+### 400 Bad Request - Email Already Registered
+
+```json
+{
+  "success": false,
+  "error": {
+    "status": 400,
+    "message": "Email already registered"
+  }
+}
+```
+
+### 422 Unprocessable Entity
+
+```json
+{
+  "success": false,
+  "error": {
+    "status": 422,
+    "message": "Signup failed: [error details]"
+  }
+}
+```
+
+### 500 Internal Server Error
+
+```json
+{
+  "success": false,
+  "error": {
+    "status": 500,
+    "message": "Internal server error"
+  }
+}
+```
+
+# Status Codes
+
+| Code | Meaning |
+|------|---------|
+| 200 | Admin account created successfully |
+| 400 | Validation failed or email already exists |
+| 422 | Unprocessable entity |
+| 500 | Server error |
+
+# Database Models Used
+
+**User Model**
+- Inserts new document in `users` collection
+- Fields populated: `name`, `email`, `password` (hashed), `role` (defaults to MASTER_ADMIN), `status` (defaults to PENDING), `branch` (null), `createdAt`, `updatedAt`
+- Indexes used: `email` (unique)
+
+# Service Layer Used
+
+**authService.signupAdmin(name, email, password)**
+- Checks if email already exists
+- Hashes password using bcrypt (10 salt rounds)
+- Creates user with MASTER_ADMIN role
+- Stores branch as null
+- Logs action to audit trail
+- Returns admin data without password
+
+# Business Logic Flow
+
+```
+1. Receive admin signup request
+   ↓
+2. Validate request schema (Joi validation)
+   ↓
+3. Check if email already exists
+   ↓
+4. Hash password using bcrypt
+   ↓
+5. Create admin user with defaults (role: MASTER_ADMIN, status: PENDING, branch: null)
+   ↓
+6. Save to database
+   ↓
+7. Log action in audit trail (CREATE_ADMIN)
+   ↓
+8. Return admin data (without password)
+```
+
+# Security Notes
+
+- **Password Security:** Passwords are hashed using bcrypt with 10 salt rounds before storage
+- **Email Uniqueness:** Emails are enforced as unique at database level
+- **Password Not Returned:** Response never includes hashed password
+- **Audit Trail:** Admin signup is logged for security auditing
+- **Role Control:** New accounts are created with MASTER_ADMIN role only through this endpoint
+
+**Security Risks Detected:**
+⚠️ **CONSIDER:** Restrict access to this endpoint in production if initial admin bootstrap is not needed
+
+---
+
 ### 2. User Login
 
 # API Name
@@ -3380,7 +3592,7 @@ All emails sent through SendGrid with HTML templates:
 
 The AUTH module provides comprehensive authentication and authorization functionality with:
 
-✅ **11 API Endpoints** covering signup, login, password reset, user management, and admin controls
+✅ **12 API Endpoints** covering signup, admin signup, login, password reset, user management, and admin controls
 
 ✅ **JWT-based Authentication** with 7-day token expiration
 

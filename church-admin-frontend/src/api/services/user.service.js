@@ -6,17 +6,9 @@ export const userService = {
   
   getUser: (id) => axiosClient.get(USER_ENDPOINTS.GET(id)),
   
-  createUser: (userData) => axiosClient.post(USER_ENDPOINTS.CREATE, userData),
+  approveUser: (id) => axiosClient.put(USER_ENDPOINTS.UPDATE_STATUS(id), { status: 'APPROVED' }),
   
-  updateUser: (id, userData) => axiosClient.put(USER_ENDPOINTS.UPDATE(id), userData),
+  rejectUser: (id) => axiosClient.put(USER_ENDPOINTS.UPDATE_STATUS(id), { status: 'REJECTED' }),
   
   deleteUser: (id) => axiosClient.delete(USER_ENDPOINTS.DELETE(id)),
-  
-  approveUser: (id) => axiosClient.post(USER_ENDPOINTS.APPROVE(id)),
-  
-  rejectUser: (id) => axiosClient.post(USER_ENDPOINTS.REJECT(id)),
-  
-  changeRole: (id, role) => axiosClient.patch(USER_ENDPOINTS.CHANGE_ROLE(id), { role }),
-  
-  changeStatus: (id, status) => axiosClient.patch(USER_ENDPOINTS.CHANGE_STATUS(id), { status }),
 };

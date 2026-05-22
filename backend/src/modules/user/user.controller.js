@@ -1,23 +1,54 @@
+import userService from './user.service.js';
+import { asyncHandler } from '../../utils/asyncHandler.js';
+
 export const userController = {
-  async getProfile(req, res, next) {
-    // TODO: Implement get profile logic
-    res.status(200).json({ message: 'User profile' });
-  },
+  getAllUsers: asyncHandler(async (req, res, next) => {
+    const { role, status, branch, page, limit } = req.query;
 
-  async updateProfile(req, res, next) {
-    // TODO: Implement update profile logic
-    res.status(200).json({ message: 'Profile updated' });
-  },
+    const filters = { role, status, branch };
+    const pagination = { page: parseInt(page) || 1, limit: parseInt(limit) || 10 };
 
-  async getAllUsers(req, res, next) {
-    // TODO: Implement get all users logic
-    res.status(200).json({ message: 'All users' });
-  },
+    const result = await userService.getAllUsers(filters, pagination);
 
-  async deleteUser(req, res, next) {
-    // TODO: Implement delete user logic
-    res.status(200).json({ message: 'User deleted' });
-  },
+    res.status(200).json({
+      success: true,
+      data: result,
+    });
+  }),
+
+  getUserById: asyncHandler(async (req, res, next) => {
+    const { userId } = req.params;
+
+    const user = await userService.getUserById(userId);
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  }),
+
+  updateUser: asyncHandler(async (req, res, next) => {
+    const { userId } = req.params;
+    const updateData = req.body;
+
+    const user = await userService.updateUser(userId, updateData);
+
+    res.status(200).json({
+      success: true,
+      data: user,
+    });
+  }),
+
+  deleteUser: asyncHandler(async (req, res, next) => {
+    const { userId } = req.params;
+
+    const result = await userService.deleteUser(userId);
+
+    res.status(200).json({
+      success: true,
+      data: result,
+    });
+  }),
 };
 
 export default userController;

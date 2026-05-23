@@ -82,6 +82,7 @@ const AppRouter = () => {
             {/* Audit Logs */}
             <Route path={ROUTES.AUDIT_LOGS} element={<AuditLogs />} />
             <Route path="/admin/audits" element={<AuditLogs />} />
+            <Route path="/admin/audits/:id" element={<AuditLogs />} />
 
             {/* Settings */}
             <Route path={ROUTES.SETTINGS} element={<GeneralSettings />} />

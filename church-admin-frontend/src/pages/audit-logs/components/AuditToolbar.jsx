@@ -1,0 +1,22 @@
+import { useAuditStore } from '../../../store/auditStore';
+
+const AuditToolbar = () => {
+  const { fetchLogs, setFilters, setPagination } = useAuditStore();
+
+  const onRefresh = () => fetchLogs();
+
+  const onReset = () => {
+    setFilters({ action: '', performerRole: '', targetType: '', branch: '', startDate: '', endDate: '' });
+    setPagination({ page: 1, limit: 20 });
+    fetchLogs();
+  };
+
+  return (
+    <div className="flex items-center gap-3">
+      <button onClick={onRefresh} className="px-3 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-sm">Refresh</button>
+      <button onClick={onReset} className="px-3 py-2 rounded-xl bg-transparent border hover:bg-gray-50">Reset</button>
+    </div>
+  );
+};
+
+export default AuditToolbar;

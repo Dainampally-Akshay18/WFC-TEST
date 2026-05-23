@@ -5,7 +5,7 @@ import SidebarFooter from './SidebarFooter';
 import Logo from '../shared/Logo';
 
 const Sidebar = () => {
-  const { isOpen, isCollapsed } = useSidebarStore();
+  const { isCollapsed } = useSidebarStore();
 
   const width = isCollapsed ? 72 : 260;
 
@@ -13,9 +13,10 @@ const Sidebar = () => {
     <>
       {/* Desktop sidebar */}
       <aside
-        className="fixed left-0 top-0 h-screen z-30 hidden md:flex flex-col transition-all duration-300"
+        className="sticky top-0 z-30 hidden h-screen shrink-0 flex-col overflow-hidden transition-all duration-300 md:flex"
         style={{
           width: `${width}px`,
+          minWidth: `${width}px`,
           background: 'var(--glass-sidebar)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',

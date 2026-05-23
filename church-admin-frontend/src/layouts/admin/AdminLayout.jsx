@@ -8,21 +8,23 @@ import MainContent from './components/shell/MainContent';
 const AdminLayout = () => {
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-base)' }}>
-      {/* Desktop Sidebar */}
-      <Sidebar />
-
       {/* Mobile Sidebar Drawer */}
       <MobileSidebar />
 
-      {/* Top Navbar — spans full width minus sidebar on desktop */}
-      <Navbar />
+      <div className="flex min-h-screen min-w-0">
+        {/* Desktop Sidebar */}
+        <Sidebar />
 
-      {/* Main content area */}
-      <LayoutShell>
-        <MainContent>
-          <Outlet />
-        </MainContent>
-      </LayoutShell>
+        <LayoutShell>
+          {/* Top Navbar */}
+          <Navbar />
+
+          {/* Main content area */}
+          <MainContent>
+            <Outlet />
+          </MainContent>
+        </LayoutShell>
+      </div>
     </div>
   );
 };

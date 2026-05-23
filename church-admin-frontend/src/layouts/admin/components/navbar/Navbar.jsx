@@ -12,7 +12,7 @@ const HamburgerIcon = ({ onClick, isOpen }) => (
   <button
     onClick={onClick}
     aria-label="Toggle sidebar"
-    className="p-2 rounded-xl transition-all duration-200 flex-shrink-0"
+    className="p-2 rounded-xl transition-all duration-200 shrink-0"
     style={{
       background: 'var(--glass-card)',
       border: '1px solid var(--border-glass)',
@@ -50,13 +50,10 @@ const Navbar = () => {
   const { isOpen, isCollapsed, toggleSidebar, toggleCollapse } = useSidebarStore();
   const { isAuthenticated } = useAuth();
 
-  const sidebarWidth = !isAuthenticated ? 0 : !isOpen ? 0 : isCollapsed ? 72 : 260;
-
   return (
     <nav
-      className="fixed top-0 right-0 z-40 transition-all duration-300 flex-shrink-0"
+      className="sticky top-0 z-40 shrink-0 transition-all duration-300"
       style={{
-        left: `${sidebarWidth}px`,
         height: 'var(--navbar-height)',
         background: 'var(--glass-navbar)',
         backdropFilter: 'blur(16px)',

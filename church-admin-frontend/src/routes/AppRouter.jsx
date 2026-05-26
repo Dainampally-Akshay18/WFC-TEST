@@ -19,6 +19,8 @@ import DashboardHome from '../pages/dashboard/DashboardHome';
 // Admin Placeholder Pages
 import UserList from '../pages/users/UserList';
 import EventList from '../pages/events/EventList';
+import CreateEvent from '../pages/events/CreateEvent';
+import EditEvent from '../pages/events/EditEvent';
 import BlogList from '../pages/blogs/BlogList';
 import SermonList from '../pages/sermons/SermonList';
 import PrayerList from '../pages/prayers/PrayerList';
@@ -62,6 +64,8 @@ const AppRouter = () => {
             {/* Events */}
             <Route path={ROUTES.EVENTS} element={<EventList />} />
             <Route path="/admin/events" element={<EventList />} />
+            <Route path="/admin/events/create" element={<CreateEvent />} />
+            <Route path="/admin/events/edit/:id" element={<EditEvent />} />
 
             {/* Blogs */}
             <Route path={ROUTES.BLOGS} element={<BlogList />} />

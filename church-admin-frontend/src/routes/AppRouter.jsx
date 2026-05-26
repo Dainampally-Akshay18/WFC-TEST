@@ -22,11 +22,19 @@ import EventList from '../pages/events/EventList';
 import CreateEvent from '../pages/events/CreateEvent';
 import EditEvent from '../pages/events/EditEvent';
 import BlogList from '../pages/blogs/BlogList';
-import SermonList from '../pages/sermons/SermonList';
 import PrayerList from '../pages/prayers/PrayerList';
 import NotificationList from '../pages/notifications/NotificationList';
 import AuditLogs from '../pages/audit-logs/AuditLogs';
 import GeneralSettings from '../pages/settings/GeneralSettings';
+
+// Sermon Pages
+import SermonList from '../pages/sermons/SermonList';
+import CreateSermon from '../pages/sermons/CreateSermon';
+import EditSermon from '../pages/sermons/EditSermon';
+import SermonCategoryList from '../pages/sermons/SermonCategoryList';
+import CreateSermonCategory from '../pages/sermons/CreateSermonCategory';
+import EditSermonCategory from '../pages/sermons/EditSermonCategory';
+import SermonCategoryDetail from '../pages/sermons/SermonCategoryDetail';
 
 // Error Pages
 import NotFound from '../pages/errors/NotFound';
@@ -74,6 +82,12 @@ const AppRouter = () => {
             {/* Sermons */}
             <Route path={ROUTES.SERMONS} element={<SermonList />} />
             <Route path="/admin/sermons" element={<SermonList />} />
+            <Route path="/admin/sermons/create" element={<CreateSermon />} />
+            <Route path="/admin/sermons/edit/:id" element={<EditSermon />} />
+            <Route path="/admin/sermons/categories" element={<SermonCategoryList />} />
+            <Route path="/admin/sermons/categories/create" element={<CreateSermonCategory />} />
+            <Route path="/admin/sermons/categories/edit/:id" element={<EditSermonCategory />} />
+            <Route path="/admin/sermons/category/:categoryId" element={<SermonCategoryDetail />} />
 
             {/* Prayers */}
             <Route path={ROUTES.PRAYERS} element={<PrayerList />} />

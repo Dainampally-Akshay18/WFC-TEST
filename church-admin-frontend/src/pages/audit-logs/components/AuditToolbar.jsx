@@ -1,14 +1,15 @@
 import { useAuditStore } from '../../../store/auditStore';
 
 const AuditToolbar = () => {
-  const { fetchLogs, setFilters, setPagination } = useAuditStore();
+  const { fetchAllLogs, fetchStatistics, clearFilters } = useAuditStore();
 
-  const onRefresh = () => fetchLogs();
+  const onRefresh = () => {
+    fetchAllLogs();
+    fetchStatistics();
+  };
 
   const onReset = () => {
-    setFilters({ action: '', performerRole: '', targetType: '', branch: '', startDate: '', endDate: '' });
-    setPagination({ page: 1, limit: 20 });
-    fetchLogs();
+    clearFilters();
   };
 
   return (

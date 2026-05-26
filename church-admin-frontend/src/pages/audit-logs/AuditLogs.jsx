@@ -10,21 +10,19 @@ import AuditDetailsDrawer from './components/AuditDetailsDrawer';
 import AuditSkeleton from './components/AuditSkeleton';
 
 const AuditLogs = () => {
-    const { fetchLogs, fetchStatistics, loading, logs, pagination, drawerOpen } = useAuditStore();
+    const { fetchAllLogs, fetchStatistics, loading, drawerOpen } = useAuditStore();
 
+    // Fetch ALL logs once on mount — filtering & pagination happen in frontend
     useEffect(() => {
+        fetchAllLogs();
         fetchStatistics();
-        fetchLogs();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // open drawer if URL contains id
+    // Open drawer if URL contains id
     const { id } = useParams();
     useEffect(() => {
         if (id) {
-            // open drawer and load
-            // openDrawer will fetch the log
-            // eslint-disable-next-line no-unused-expressions
             useAuditStore.getState().openDrawer(id);
         }
     }, [id]);

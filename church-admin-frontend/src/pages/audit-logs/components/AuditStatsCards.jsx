@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useAuditStore } from '../../../store/auditStore';
 
 const StatCard = ({ title, value }) => (
@@ -9,9 +8,20 @@ const StatCard = ({ title, value }) => (
 );
 
 const AuditStatsCards = () => {
-  const { statistics, fetchStatistics } = useAuditStore();
+  const { statistics, statsLoading } = useAuditStore();
 
-  useEffect(() => { fetchStatistics(); }, [fetchStatistics]);
+  if (statsLoading) {
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="p-4 rounded-xl shadow-sm animate-pulse" style={{ background: 'var(--glass-card)', border: '1px solid var(--border-glass)' }}>
+            <div className="h-3 w-16 bg-gray-200 rounded mb-3" />
+            <div className="h-7 w-10 bg-gray-200 rounded" />
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">

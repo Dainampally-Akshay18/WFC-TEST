@@ -254,3 +254,49 @@ body {
 .transition-theme {
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
+
+/* ===================== FORM ELEMENT THEME ===================== */
+select,
+input[type="text"],
+input[type="date"],
+input[type="search"],
+input[type="email"],
+input[type="password"],
+textarea {
+  color: var(--text-primary);
+  border-color: var(--border-glass);
+}
+
+select option {
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.dark select,
+.dark input[type="text"],
+.dark input[type="date"],
+.dark input[type="search"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark textarea {
+  background-color: rgba(17, 22, 47, 0.9);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark select option {
+  background-color: #11162F;
+  color: #FFFFFF;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #7E879E;
+}
+
+.dark select:focus,
+.dark input:focus,
+.dark textarea:focus {
+  border-color: rgba(123, 44, 191, 0.5);
+  box-shadow: 0 0 0 2px rgba(123, 44, 191, 0.2);
+}

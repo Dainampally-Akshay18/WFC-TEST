@@ -1,18 +1,38 @@
 import { useAuditStore } from '../../../store/auditStore';
 
 const AuditPagination = () => {
-  const { pagination, setPagination, fetchLogs } = useAuditStore();
+  const { currentPage, totalPages, totalFiltered, allLogs, setPage } = useAuditStore();
 
-  const go = (page) => {
-    setPagination({ page });
-    setTimeout(() => fetchLogs(), 0);
-  };
+  // Don't render if no data at all
+  if (allLogs.length === 0) return null;
 
   return (
-    <div className="flex items-center justify-end gap-3 mt-3">
-      <button disabled={pagination.page <= 1} onClick={() => go(pagination.page - 1)} className="px-3 py-1 rounded-lg border">Prev</button>
-      <div className="px-3 py-1">Page {pagination.page} / {pagination.pages || 1}</div>
-      <button disabled={pagination.page >= (pagination.pages || 1)} onClick={() => go(pagination.page + 1)} className="px-3 py-1 rounded-lg border">Next</button>
+    <div className="flex items-center justify-between mt-3">
+      <span className="text-sm" style={{ color: 'var(--text-secondary, #9CA3AF)' }}>
+        Showing {totalFiltered} of {allLogs.length} logs
+      </span>
+
+      {totalPages > 1 && (
+        <div className="flex items-center gap-3">
+          <button
+            disabled={currentPage <= 1}
+            onClick={() => setPage(currentPage - 1)}
+            className="px-3 py-1 rounded-lg border disabled:opacity-40 transition-opacity"
+          >
+            Prev
+          </button>
+          <div className="px-3 py-1">
+            Page {currentPage} / {totalPages}
+          </div>
+          <button
+            disabled={currentPage >= totalPages}
+            onClick={() => setPage(currentPage + 1)}
+            className="px-3 py-1 rounded-lg border disabled:opacity-40 transition-opacity"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

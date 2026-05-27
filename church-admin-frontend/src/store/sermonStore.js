@@ -56,9 +56,18 @@ export const useSermonStore = create((set, get) => ({
       );
     }
 
-    // Filter by category
+    // Filter by category - handle multiple response structures
     if (filters.categoryId) {
-      filtered = filtered.filter((sermon) => sermon.categoryId === filters.categoryId);
+      const normalizedCategoryId = String(filters.categoryId).trim();
+      filtered = filtered.filter((sermon) => {
+        // Direct match: sermon.categoryId === filters.categoryId
+        if (sermon.categoryId && String(sermon.categoryId).trim() === normalizedCategoryId) return true;
+        // Nested reference: sermon.category._id === filters.categoryId
+        if (sermon.category?._id && String(sermon.category._id).trim() === normalizedCategoryId) return true;
+        // String reference: sermon.category === filters.categoryId
+        if (sermon.category && String(sermon.category).trim() === normalizedCategoryId) return true;
+        return false;
+      });
     }
 
     // Filter by status

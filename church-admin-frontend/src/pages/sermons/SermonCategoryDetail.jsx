@@ -36,34 +36,45 @@ const SermonCategoryDetail = () => {
     setSermonToDelete,
   } = useSermonStore();
 
-  const { categories, deleteCategory, isMutating: categoryMutating, setDeleteModalOpen: setCategoryDeleteModalOpen, deleteModalOpen: categoryDeleteModalOpen, categoryToDelete, setCategoryToDelete } = useSermonCategoryStore();
+  const { categories, deleteCategory, isMutating: categoryMutating, setDeleteModalOpen: setCategoryDeleteModalOpen, deleteModalOpen: categoryDeleteModalOpen, categoryToDelete, setCategoryToDelete, fetchCategories } = useSermonCategoryStore();
 
-  // Filter sermons by category
-  const categorySermons = sermons.filter((s) => s.categoryId === categoryId);
+  // Use sermons directly since backend filters by categoryId
+  const categorySermons = sermons;
 
   useEffect(() => {
-    const loadCategory = async () => {
+    const initPage = async () => {
       try {
-        const found = categories.find((cat) => cat._id === categoryId);
-        if (found) {
-          setCategory(found);
-        } else {
-          toast.error('Category not found');
-          navigate('/admin/sermons');
-          return;
+        // Fetch categories if empty
+        if (!categories || categories.length === 0) {
+          await fetchCategories();
         }
-      } finally {
+        
+        // Fetch sermons for this category
+        await fetchSermons({ categoryId });
+        
+        setIsLoadingCategory(false);
+      } catch (error) {
+        console.error('Failed to load page data:', error);
+        toast.error('Failed to load category data');
         setIsLoadingCategory(false);
       }
     };
 
-    const loadSermons = async () => {
-      await fetchSermons();
-    };
+    initPage();
+  }, [categoryId]);
 
-    loadCategory();
-    loadSermons();
-  }, [categoryId, categories, navigate, fetchSermons]);
+  // Update category when categories or categoryId changes
+  useEffect(() => {
+    if (categories && categories.length > 0 && categoryId) {
+      const found = categories.find((cat) => cat._id === categoryId);
+      if (found) {
+        setCategory(found);
+      } else {
+        toast.error('Category not found');
+        navigate('/admin/sermons');
+      }
+    }
+  }, [categoryId, categories, navigate]);
 
   const handleDeleteSermon = async () => {
     if (!sermonToDelete) return;

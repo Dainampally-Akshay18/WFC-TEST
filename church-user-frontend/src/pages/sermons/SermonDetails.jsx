@@ -1,18 +1,10 @@
-/**
- * SERMON DETAILS PAGE
- * Displays full sermon information with metadata
- * Premium typography and glassmorphism UI
- */
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useSermonDetails } from "../../hooks/useSermons";
-import { useTheme } from "../../hooks/useTheme";
 import { ArrowLeft, Play, Calendar, User, Tag } from "lucide-react";
 
 const SermonDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { colors, glassmorphism, isDarkMode } = useTheme();
 
   const { data: sermon, isLoading, error } = useSermonDetails(id);
 
@@ -26,16 +18,10 @@ const SermonDetails = () => {
 
   if (isLoading) {
     return (
-      <div
-        className="min-h-screen flex items-center justify-center"
-        style={{ background: colors.background.primary }}
-      >
+      <div className="min-h-screen bg-[#F5F9FF] flex items-center justify-center">
         <div className="text-center">
-          <div
-            className="h-12 w-12 rounded-full border-4 border-t-transparent animate-spin mx-auto mb-4"
-            style={{ borderColor: colors.accent.purple }}
-          />
-          <p style={{ color: colors.text.secondary }}>Loading sermon...</p>
+          <div className="h-12 w-12 rounded-full border-4 border-[#E2E8F0] border-t-[#2563EB] animate-spin mx-auto mb-4" />
+          <p className="text-[#64748B]">Loading sermon...</p>
         </div>
       </div>
     );
@@ -43,21 +29,14 @@ const SermonDetails = () => {
 
   if (error || !sermon) {
     return (
-      <div
-        className="min-h-screen flex items-center justify-center"
-        style={{ background: colors.background.primary }}
-      >
+      <div className="min-h-screen bg-[#F5F9FF] flex items-center justify-center p-6">
         <div className="text-center">
-          <p style={{ color: colors.accent.pink }} className="mb-4">
+          <p className="text-red-600 mb-4">
             Failed to load sermon details.
           </p>
           <button
             onClick={handleBack}
-            className="px-6 py-2 rounded-lg"
-            style={{
-              background: colors.accent.purple,
-              color: "#fff",
-            }}
+            className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-6 py-3 rounded-xl font-semibold transition-colors"
           >
             Back to Sermons
           </button>
@@ -67,105 +46,64 @@ const SermonDetails = () => {
   }
 
   return (
-    <div
-      className="min-h-screen p-6"
-      style={{ background: colors.background.primary }}
-    >
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-[#F5F9FF] p-6">
+      <div className="max-w-5xl mx-auto">
         {/* Back Button */}
         <button
           onClick={handleBack}
-          className="flex items-center gap-2 mb-6 transition-opacity hover:opacity-80"
-          style={{ color: colors.text.secondary }}
+          className="flex items-center gap-2 text-[#64748B] hover:text-[#2563EB] mb-6 transition-colors"
         >
           <ArrowLeft size={20} />
           <span>Back to Sermons</span>
         </button>
 
         {/* Hero Section */}
-        <div
-          className="rounded-xl overflow-hidden mb-8"
-          style={{
-            ...glassmorphism.card,
-            background: isDarkMode
-              ? "rgba(255,255,255,0.05)"
-              : "rgba(255,255,255,0.45)",
-          }}
-        >
+        <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-sm overflow-hidden mb-8">
           {/* Thumbnail */}
-          <div className="relative h-96 overflow-hidden">
+          <div className="relative h-[500px] bg-[#F5F9FF]">
             <img
               src={sermon.thumbnail}
               alt={sermon.title}
               className="w-full h-full object-cover"
             />
-            <div
-              className="absolute inset-0 flex items-center justify-center"
-              style={{
-                background: "rgba(0,0,0,0.4)",
-              }}
-            >
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center pb-12">
               <button
                 onClick={handleWatchSermon}
-                className="p-6 rounded-full transition-transform hover:scale-110"
-                style={{
-                  background: colors.accent.purple,
-                }}
+                className="bg-[#2563EB] hover:bg-[#1D4ED8] p-6 rounded-full transform hover:scale-110 transition-all shadow-lg"
               >
-                <Play size={32} style={{ color: "#fff" }} />
+                <Play size={32} className="text-white fill-white" />
               </button>
             </div>
 
             {/* Status Badge */}
-            <div
-              className="absolute top-4 right-4 px-4 py-2 rounded-full text-sm font-semibold"
-              style={{
-                background: sermon.isPublished
-                  ? colors.accent.purple
-                  : colors.accent.pink,
-                color: "#fff",
-              }}
-            >
-              {sermon.isPublished ? "Published" : "Draft"}
-            </div>
+            {sermon.isPublished && (
+              <div className="absolute top-6 right-6 bg-[#2563EB] text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                Published
+              </div>
+            )}
           </div>
 
           {/* Content */}
           <div className="p-8">
             {/* Category */}
-            <div
-              className="inline-block px-3 py-1 rounded-full text-sm font-semibold mb-4"
-              style={{
-                background: isDarkMode
-                  ? "rgba(176,38,255,0.2)"
-                  : "rgba(109,40,217,0.15)",
-                color: colors.accent.purple,
-              }}
-            >
-              {sermon.categoryId?.name || "Uncategorized"}
-            </div>
+            {sermon.categoryId?.name && (
+              <div className="inline-block bg-[#EFF6FF] text-[#2563EB] px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                {sermon.categoryId.name}
+              </div>
+            )}
 
             {/* Title */}
-            <h1
-              className="text-4xl font-bold mb-4"
-              style={{ color: colors.text.primary }}
-            >
+            <h1 className="text-4xl font-bold text-[#0F172A] mb-6">
               {sermon.title}
             </h1>
 
             {/* Meta Info */}
-            <div className="flex flex-wrap gap-6 mb-6">
-              <div
-                className="flex items-center gap-2"
-                style={{ color: colors.text.secondary }}
-              >
+            <div className="flex flex-wrap gap-6 mb-6 pb-6 border-b border-[#E2E8F0]">
+              <div className="flex items-center gap-2 text-[#64748B]">
                 <User size={18} />
                 <span>{sermon.speakerName || "Unknown Speaker"}</span>
               </div>
-              <div
-                className="flex items-center gap-2"
-                style={{ color: colors.text.secondary }}
-              >
+              <div className="flex items-center gap-2 text-[#64748B]">
                 <Calendar size={18} />
                 <span>
                   {new Date(sermon.createdAt).toLocaleDateString("en-US", {
@@ -176,10 +114,7 @@ const SermonDetails = () => {
                 </span>
               </div>
               {sermon.categoryId && (
-                <div
-                  className="flex items-center gap-2"
-                  style={{ color: colors.text.secondary }}
-                >
+                <div className="flex items-center gap-2 text-[#64748B]">
                   <Tag size={18} />
                   <span>{sermon.categoryId.name}</span>
                 </div>
@@ -187,23 +122,16 @@ const SermonDetails = () => {
             </div>
 
             {/* Description */}
-            <div
-              className="text-lg leading-relaxed whitespace-pre-wrap"
-              style={{ color: colors.text.secondary }}
-            >
+            <div className="text-lg text-[#64748B] leading-relaxed whitespace-pre-wrap mb-8">
               {sermon.description}
             </div>
 
             {/* Watch Button */}
             <button
               onClick={handleWatchSermon}
-              className="mt-8 px-8 py-3 rounded-lg font-semibold transition-transform hover:scale-105 flex items-center gap-2"
-              style={{
-                background: colors.accent.purple,
-                color: "#fff",
-              }}
+              className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-8 py-4 rounded-xl font-semibold flex items-center gap-3 transition-all transform hover:scale-105 shadow-sm hover:shadow-md"
             >
-              <Play size={20} />
+              <Play size={20} className="fill-white" />
               Watch Sermon
             </button>
           </div>
@@ -211,22 +139,11 @@ const SermonDetails = () => {
 
         {/* Additional Info */}
         {sermon.categoryId?.description && (
-          <div
-            className="rounded-xl p-6"
-            style={{
-              ...glassmorphism.card,
-              background: isDarkMode
-                ? "rgba(255,255,255,0.05)"
-                : "rgba(255,255,255,0.45)",
-            }}
-          >
-            <h3
-              className="text-xl font-bold mb-3"
-              style={{ color: colors.text.primary }}
-            >
+          <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-sm p-8">
+            <h3 className="text-2xl font-bold text-[#0F172A] mb-4">
               About {sermon.categoryId.name}
             </h3>
-            <p style={{ color: colors.text.secondary }}>
+            <p className="text-[#64748B] leading-relaxed">
               {sermon.categoryId.description}
             </p>
           </div>

@@ -1,17 +1,10 @@
-/**
- * EVENTS PAGE
- * Event listing with upcoming events, filtering, and details
- */
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader2, AlertCircle, Calendar, Clock, MapPin, Eye } from "lucide-react";
-import { useTheme } from "../../context/ThemeProvider";
 import { useEvents } from "../../hooks/useEvents";
 
 const Events = () => {
   const navigate = useNavigate();
-  const { colors, glassmorphism, shadows } = useTheme();
   const { data: events = [], isLoading, error } = useEvents();
   const [sortBy, setSortBy] = useState("upcoming");
 
@@ -39,202 +32,160 @@ const Events = () => {
   };
 
   return (
-    <div className="space-y-8">
-      {/* HEADER */}
-      <div>
-        <h1
-          className="mb-2 text-4xl font-bold md:text-5xl"
-          style={{
-            background: `linear-gradient(135deg, ${colors.accent.purple}, ${colors.accent.pink})`,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}
-        >
-          Church Events
-        </h1>
-        <p style={{ color: colors.text.secondary }}>
-          Upcoming services, meetings, and community events
-        </p>
-      </div>
-
-      {/* SORT OPTIONS */}
-      <div className="flex gap-2">
-        <button
-          onClick={() => setSortBy("upcoming")}
-          className="rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200"
-          style={{
-            background:
-              sortBy === "upcoming"
-                ? `linear-gradient(135deg, ${colors.accent.purple}60, ${colors.accent.pink}40)`
-                : `rgba(255,255,255,0.05)`,
-            color: colors.text.primary,
-            border: `1px solid ${sortBy === "upcoming" ? colors.accent.purple : colors.border.glass}`,
-          }}
-        >
-          Upcoming
-        </button>
-        <button
-          onClick={() => setSortBy("all")}
-          className="rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200"
-          style={{
-            background:
-              sortBy === "all"
-                ? `linear-gradient(135deg, ${colors.accent.purple}60, ${colors.accent.pink}40)`
-                : `rgba(255,255,255,0.05)`,
-            color: colors.text.primary,
-            border: `1px solid ${sortBy === "all" ? colors.accent.purple : colors.border.glass}`,
-          }}
-        >
-          All Events
-        </button>
-      </div>
-
-      {/* LOADING STATE */}
-      {isLoading && (
-        <div className="flex justify-center py-12">
-          <div className="text-center">
-            <Loader2 className="mx-auto mb-4 h-8 w-8 animate-spin" style={{ color: colors.accent.purple }} />
-            <p style={{ color: colors.text.secondary }}>Loading events...</p>
-          </div>
-        </div>
-      )}
-
-      {/* ERROR STATE */}
-      {error && (
-        <div
-          className="rounded-lg border px-4 py-4"
-          style={{
-            borderColor: colors.accent.blue,
-            background: `rgba(59,130,255,0.1)`,
-          }}
-        >
-          <div className="flex items-start gap-3">
-            <AlertCircle className="h-5 w-5 flex-shrink-0" style={{ color: colors.accent.blue }} />
-            <div>
-              <h3 className="font-semibold" style={{ color: colors.text.primary }}>
-                Failed to load events
-              </h3>
-              <p style={{ color: colors.text.secondary }} className="text-sm">
-                {error.message || "An error occurred while fetching events"}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* EMPTY STATE */}
-      {!isLoading && sortedEvents.length === 0 && !error && (
-        <div className="text-center py-12">
-          <Calendar className="mx-auto mb-4 h-12 w-12" style={{ color: colors.text.muted }} />
-          <p style={{ color: colors.text.muted }} className="text-lg">
-            No events available
+    <div className="min-h-screen bg-[#F5F9FF] p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-[#0F172A] mb-2">
+            Church Events
+          </h1>
+          <p className="text-[#64748B]">
+            Upcoming services, meetings, and community events
           </p>
         </div>
-      )}
 
-      {/* EVENTS GRID */}
-      {!isLoading && sortedEvents.length > 0 && (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {sortedEvents.map((event) => (
-            <div
-              key={event._id}
-              style={{
-                background: glassmorphism.card.background,
-                border: `1px solid ${glassmorphism.card.border}`,
-                backdropFilter: glassmorphism.card.backdropFilter,
-                boxShadow: shadows.md,
-              }}
-              className="group cursor-pointer overflow-hidden rounded-xl transition-all duration-300 hover:shadow-lg flex flex-col"
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = glassmorphism.cardHover.background;
-                e.currentTarget.style.border = `1px solid ${glassmorphism.cardHover.border}`;
-                e.currentTarget.style.boxShadow = glassmorphism.cardHover.boxShadow;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = glassmorphism.card.background;
-                e.currentTarget.style.border = `1px solid ${glassmorphism.card.border}`;
-                e.currentTarget.style.boxShadow = shadows.md;
-              }}
-              onClick={() => handleEventClick(event._id)}
-            >
-              {/* HEADER WITH VISIBILITY BADGE */}
-              <div className="flex items-start justify-between gap-4 border-b p-6" style={{ borderColor: colors.border.glass }}>
-                <div className="flex-1 min-w-0">
-                  <h3
-                    className="mb-2 line-clamp-2 text-lg font-bold transition-colors duration-200"
-                    style={{ color: colors.text.primary }}
-                  >
-                    {event.title}
-                  </h3>
-                  <p style={{ color: colors.text.secondary }} className="text-sm line-clamp-2">
+        {/* Sort Options */}
+        <div className="flex gap-2 mb-8">
+          <button
+            onClick={() => setSortBy("upcoming")}
+            className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+              sortBy === "upcoming"
+                ? "bg-[#2563EB] text-white shadow-sm"
+                : "bg-white text-[#64748B] border border-[#E2E8F0] hover:border-[#2563EB] hover:text-[#2563EB]"
+            }`}
+          >
+            Upcoming
+          </button>
+          <button
+            onClick={() => setSortBy("all")}
+            className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+              sortBy === "all"
+                ? "bg-[#2563EB] text-white shadow-sm"
+                : "bg-white text-[#64748B] border border-[#E2E8F0] hover:border-[#2563EB] hover:text-[#2563EB]"
+            }`}
+          >
+            All Events
+          </button>
+        </div>
+
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex justify-center py-20">
+            <div className="text-center">
+              <div className="h-12 w-12 rounded-full border-4 border-[#E2E8F0] border-t-[#2563EB] animate-spin mx-auto mb-4" />
+              <p className="text-[#64748B]">Loading events...</p>
+            </div>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-6 w-6 flex-shrink-0 text-red-600" />
+              <div>
+                <h3 className="font-semibold text-red-900 mb-1">
+                  Failed to load events
+                </h3>
+                <p className="text-sm text-red-700">
+                  {error.message || "An error occurred while fetching events"}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && sortedEvents.length === 0 && !error && (
+          <div className="bg-white rounded-2xl border border-[#E2E8F0] p-16 text-center">
+            <Calendar className="mx-auto mb-4 h-16 w-16 text-[#94A3B8]" />
+            <h3 className="text-xl font-semibold text-[#0F172A] mb-2">No events available</h3>
+            <p className="text-[#64748B]">
+              Check back later for upcoming church events
+            </p>
+          </div>
+        )}
+
+        {/* Events Grid */}
+        {!isLoading && sortedEvents.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sortedEvents.map((event) => (
+              <div
+                key={event._id}
+                className="w-80 h-100 bg-white rounded-2xl border border-[#E2E8F0] shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden group"
+                onClick={() => handleEventClick(event._id)}
+              >
+                {/* Header */}
+                <div className="p-6 border-b border-[#E2E8F0]">
+                  <div className="flex items-start justify-between gap-4 mb-3">
+                    <h3 className="text-lg font-bold text-[#0F172A] line-clamp-2 group-hover:text-[#2563EB] transition-colors flex-1">
+                      {event.title}
+                    </h3>
+                    <span
+                      className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold ${
+                        event.visibility === "GLOBAL"
+                          ? "bg-[#EFF6FF] text-[#2563EB]"
+                          : "bg-[#F0FDF4] text-[#16A34A]"
+                      }`}
+                    >
+                      {getVisibilityBadge(event.visibility, event.branch)}
+                    </span>
+                  </div>
+                  <p className="text-sm text-[#64748B] line-clamp-2">
                     {event.description}
                   </p>
                 </div>
-                <div
-                  className="rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap flex-shrink-0"
-                  style={{
-                    background: event.visibility === "GLOBAL"
-                      ? `rgba(176,38,255,0.2)`
-                      : `rgba(59,130,255,0.2)`,
-                    color: event.visibility === "GLOBAL" ? colors.accent.purple : colors.accent.blue,
-                    border: `1px solid ${event.visibility === "GLOBAL" ? colors.border.glass : colors.border.glass}`,
-                  }}
-                >
-                  {getVisibilityBadge(event.visibility, event.branch)}
+
+                {/* Event Details */}
+                <div className="p-6 space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#EFF6FF] flex items-center justify-center">
+                      <Calendar className="h-5 w-5 text-[#2563EB]" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-[#94A3B8] font-medium">Date</p>
+                      <p className="text-sm text-[#0F172A] font-semibold">
+                        {formatDate(event.date)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#F0FDF4] flex items-center justify-center">
+                      <Clock className="h-5 w-5 text-[#16A34A]" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-[#94A3B8] font-medium">Time</p>
+                      <p className="text-sm text-[#0F172A] font-semibold">
+                        {event.time}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#FEF3C7] flex items-center justify-center">
+                      <MapPin className="h-5 w-5 text-[#F59E0B]" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-[#94A3B8] font-medium">Location</p>
+                      <p className="text-sm text-[#0F172A] font-semibold truncate">
+                        {event.location}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <div className="p-6 pt-0">
+                  <button className="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-4 py-3 rounded-xl text-sm font-semibold transition-all">
+                    View Details
+                  </button>
                 </div>
               </div>
-
-              {/* EVENT DETAILS */}
-              <div className="space-y-3 p-6 flex-1">
-                {/* DATE */}
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 flex-shrink-0" style={{ color: colors.accent.purple }} />
-                  <p style={{ color: colors.text.secondary }} className="text-sm">
-                    {formatDate(event.date)}
-                  </p>
-                </div>
-
-                {/* TIME */}
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 flex-shrink-0" style={{ color: colors.accent.blue }} />
-                  <p style={{ color: colors.text.secondary }} className="text-sm">
-                    {event.time} (24-hour format)
-                  </p>
-                </div>
-
-                {/* LOCATION */}
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 flex-shrink-0" style={{ color: colors.accent.pink }} />
-                  <p style={{ color: colors.text.secondary }} className="text-sm truncate">
-                    {event.location}
-                  </p>
-                </div>
-              </div>
-
-              {/* CTA */}
-              <div
-                className="border-t p-4"
-                style={{ borderColor: colors.border.glass }}
-              >
-                <button
-                  className="w-full rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200"
-                  style={{
-                    background: `linear-gradient(135deg, ${colors.accent.purple}, ${colors.accent.pink})`,
-                    color: colors.text.primary,
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleEventClick(event._id);
-                  }}
-                >
-                  View Details
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

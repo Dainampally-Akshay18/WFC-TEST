@@ -1,42 +1,43 @@
-/**
- * HOME PAGE / DASHBOARD
- * Main authenticated user dashboard
- * Shows spiritual community highlights, upcoming events, prayers
- * Glassmorphic design with immersive layout
- * Fully responsive for mobile/tablet/desktop
- */
-
-import { useTheme } from "../../context/ThemeProvider";
 import { useAuth } from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import { Heart, BookOpen, Calendar, Users, Bell, Sparkles } from "lucide-react";
 
 const Home = () => {
-  const { isDarkMode, colors, glassmorphism, shadows, gradients } = useTheme();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const dashboardCards = [
     {
       title: "Recent Sermons",
       icon: BookOpen,
-      color: colors.accent.blue,
       count: "12",
+      color: "blue",
       items: ["Faith and Trust", "Grace in Trials", "Love Eternal"],
+      path: "/sermons",
     },
     {
       title: "Active Prayers",
       icon: Heart,
-      color: colors.accent.pink,
       count: "28",
+      color: "rose",
       items: ["Healing Requests", "Thanksgiving", "Guidance"],
+      path: "/prayers",
     },
     {
       title: "Upcoming Events",
       icon: Calendar,
-      color: colors.accent.purple,
       count: "5",
+      color: "amber",
       items: ["Sunday Service", "Prayer Meeting", "Bible Study"],
+      path: "/events",
     },
   ];
+
+  const colorMap = {
+    blue: { bg: "bg-blue-50", text: "text-blue-600", badge: "bg-blue-100 text-blue-700" },
+    rose: { bg: "bg-rose-50", text: "text-rose-600", badge: "bg-rose-100 text-rose-700" },
+    amber: { bg: "bg-amber-50", text: "text-amber-600", badge: "bg-amber-100 text-amber-700" },
+  };
 
   const bibleVerse = {
     text: '"For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life."',
@@ -51,77 +52,47 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen" style={{ background: colors.background.primary }}>
-      {/* Welcome Section */}
-      <div className="mb-8 md:mb-12">
-        <h1 className="text-3xl md:text-4xl font-bold" style={{ color: colors.text.primary }}>
+    <div className="space-y-8">
+      {/* Welcome */}
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
           Welcome back, {user?.name?.split(" ")[0] || "Friend"}
         </h1>
-        <p className="mt-2 text-base md:text-lg" style={{ color: colors.text.secondary }}>
+        <p className="mt-1 text-gray-500">
           May your day be filled with blessings and spiritual growth
         </p>
       </div>
 
-      {/* Bible Verse Section */}
-      <div
-        className="mb-8 md:mb-12 rounded-2xl p-6 md:p-8 text-center"
-        style={{
-          ...glassmorphism.card,
-          boxShadow: isDarkMode
-            ? `0 0 30px ${colors.glow.purple}, inset 0 1px 1px rgba(255,255,255,0.1)`
-            : `0 8px 20px rgba(0,0,0,0.08)`,
-          border: `1px solid ${colors.border.active}`,
-        }}
-      >
-        <Sparkles className="mx-auto mb-4 h-6 w-6" style={{ color: colors.accent.purple }} />
-        <p className="mb-4 text-base md:text-lg italic" style={{ color: colors.text.primary }}>
-          {bibleVerse.text}
-        </p>
-        <p className="text-sm md:text-base font-semibold" style={{ color: colors.text.secondary }}>
-          {bibleVerse.reference}
-        </p>
+      {/* Bible Verse */}
+      <div className="rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-white p-6 text-center">
+        <Sparkles className="mx-auto mb-3 h-5 w-5 text-blue-500" />
+        <p className="text-gray-700 italic leading-relaxed mb-2">{bibleVerse.text}</p>
+        <p className="text-sm font-semibold text-blue-600">{bibleVerse.reference}</p>
       </div>
 
-      {/* Main Dashboard Cards */}
-      <div className="mb-8 md:mb-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-        {dashboardCards.map((card, idx) => {
+      {/* Dashboard Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {dashboardCards.map((card) => {
           const Icon = card.icon;
+          const c = colorMap[card.color];
           return (
             <div
-              key={idx}
-              className="rounded-2xl p-6 md:p-8 transition-all duration-300 hover:scale-105 hover:shadow-xl"
-              style={{
-                ...glassmorphism.card,
-                boxShadow: shadows.lg,
-              }}
+              key={card.title}
+              onClick={() => navigate(card.path)}
+              className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition-all cursor-pointer group"
             >
-              <div className="mb-4 flex items-center justify-between">
-                <div
-                  className="rounded-lg p-3 md:p-4"
-                  style={{ background: `${card.color}20` }}
-                >
-                  <Icon
-                    className="h-6 w-6 md:h-8 md:w-8"
-                    style={{ color: card.color }}
-                  />
+              <div className="flex items-center justify-between mb-4">
+                <div className={`rounded-lg p-3 ${c.bg}`}>
+                  <Icon className={`h-5 w-5 ${c.text}`} />
                 </div>
-                <span
-                  className="rounded-full px-3 md:px-4 py-1 md:py-2 text-sm md:text-base font-bold"
-                  style={{
-                    background: `${card.color}20`,
-                    color: card.color,
-                  }}
-                >
+                <span className={`rounded-full px-3 py-1 text-sm font-bold ${c.badge}`}>
                   {card.count}
                 </span>
               </div>
-              <h3
-                className="mb-3 md:mb-4 text-lg md:text-xl font-bold"
-                style={{ color: colors.text.primary }}
-              >
+              <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
                 {card.title}
               </h3>
-              <ul className="space-y-2 text-sm md:text-base" style={{ color: colors.text.secondary }}>
+              <ul className="space-y-1.5 text-sm text-gray-500">
                 {card.items.map((item, i) => (
                   <li key={i}>• {item}</li>
                 ))}
@@ -131,193 +102,85 @@ const Home = () => {
         })}
       </div>
 
-      {/* About Church Section */}
-      <div className="mb-8 md:mb-12">
-        <h2
-          className="mb-6 md:mb-8 text-2xl md:text-3xl font-bold"
-          style={{ color: colors.text.primary }}
-        >
-          About Our Community
-        </h2>
-        <div
-          className="rounded-2xl p-6 md:p-8"
-          style={{
-            ...glassmorphism.card,
-            boxShadow: shadows.md,
-          }}
-        >
-          <p
-            className="mb-4 text-base md:text-lg"
-            style={{ color: colors.text.primary }}
-          >
-            We are a vibrant spiritual community dedicated to growing together in faith, sharing the Gospel,
-            and supporting one another through prayer and fellowship.
-          </p>
-          <p
-            className="text-base md:text-lg"
-            style={{ color: colors.text.secondary }}
-          >
-            Our mission is to create a welcoming space where believers can deepen their relationship with God,
-            discover biblical wisdom through sermons and teachings, and build meaningful connections with their brothers
-            and sisters in Christ.
-          </p>
-        </div>
-      </div>
-
       {/* Community Stats */}
-      <div className="mb-8 md:mb-12">
-        <h2
-          className="mb-6 md:mb-8 text-2xl md:text-3xl font-bold"
-          style={{ color: colors.text.primary }}
-        >
-          Community Highlights
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {communityStats.map((stat, idx) => (
+      <div>
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Community Highlights</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {communityStats.map((stat) => (
             <div
-              key={idx}
-              className="rounded-xl p-4 md:p-6 text-center"
-              style={{
-                ...glassmorphism.card,
-                boxShadow: shadows.sm,
-              }}
+              key={stat.label}
+              className="bg-white rounded-xl border border-gray-100 p-5 text-center shadow-sm"
             >
-              <p
-                className="text-2xl md:text-3xl font-bold"
-                style={{
-                  background: gradients.primary,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                {stat.value}
-              </p>
-              <p
-                className="mt-2 text-xs md:text-sm font-medium"
-                style={{ color: colors.text.secondary }}
-              >
-                {stat.label}
-              </p>
+              <p className="text-2xl font-bold text-blue-600">{stat.value}</p>
+              <p className="mt-1 text-xs font-medium text-gray-500">{stat.label}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="mb-12 md:mb-16">
-        <h2
-          className="mb-6 md:mb-8 text-2xl md:text-3xl font-bold"
-          style={{ color: colors.text.primary }}
-        >
-          Quick Actions
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <button
-            className="rounded-xl px-6 md:px-8 py-4 md:py-6 text-base md:text-lg font-semibold transition-all duration-200 hover:scale-105 text-center"
-            style={{
-              background: gradients.primary,
-              color: colors.text.primary,
-              boxShadow: isDarkMode
-                ? `0 0 20px ${colors.glow.purple}`
-                : "0 8px 20px rgba(0,0,0,0.1)",
-            }}
+            onClick={() => navigate("/prayers/create")}
+            className="rounded-xl px-6 py-5 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-sm hover:shadow-md text-center"
           >
             Share a Prayer Request
           </button>
           <button
-            className="rounded-xl px-6 md:px-8 py-4 md:py-6 text-base md:text-lg font-semibold transition-all duration-200 hover:scale-105 text-center"
-            style={{
-              border: `2px solid ${colors.accent.pink}`,
-              color: colors.accent.pink,
-              background: "transparent",
-            }}
+            onClick={() => navigate("/events")}
+            className="rounded-xl px-6 py-5 text-base font-semibold text-blue-600 bg-white border-2 border-blue-200 hover:border-blue-400 hover:bg-blue-50 transition-all text-center"
           >
             Browse Upcoming Events
           </button>
         </div>
       </div>
 
-      {/* Meetings Section */}
-      <div className="mb-12 md:mb-16">
-        <h2
-          className="mb-6 md:mb-8 text-2xl md:text-3xl font-bold"
-          style={{ color: colors.text.primary }}
-        >
-          Weekly Gatherings
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+      {/* Weekly Gatherings */}
+      <div>
+        <h2 className="text-xl font-bold text-gray-900 mb-4">Weekly Gatherings</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
-            {
-              name: "Sunday Worship Service",
-              time: "9:00 AM - 11:00 AM",
-              location: "Main Sanctuary",
-              icon: Users,
-            },
-            {
-              name: "Midweek Prayer & Study",
-              time: "7:00 PM - 8:30 PM",
-              location: "Fellowship Hall",
-              icon: Heart,
-            },
-            {
-              name: "Youth Group",
-              time: "6:00 PM - 8:00 PM",
-              location: "Youth Center",
-              icon: Users,
-            },
-            {
-              name: "Bible Study Circle",
-              time: "10:00 AM - 11:30 AM",
-              location: "Study Room",
-              icon: BookOpen,
-            },
-          ].map((meeting, idx) => {
+            { name: "Sunday Worship Service", time: "9:00 AM - 11:00 AM", location: "Main Sanctuary", icon: Users },
+            { name: "Midweek Prayer & Study", time: "7:00 PM - 8:30 PM", location: "Fellowship Hall", icon: Heart },
+            { name: "Youth Group", time: "6:00 PM - 8:00 PM", location: "Youth Center", icon: Users },
+            { name: "Bible Study Circle", time: "10:00 AM - 11:30 AM", location: "Study Room", icon: BookOpen },
+          ].map((meeting) => {
             const MeetingIcon = meeting.icon;
             return (
               <div
-                key={idx}
-                className="rounded-2xl p-6 md:p-8"
-                style={{
-                  ...glassmorphism.card,
-                  boxShadow: shadows.md,
-                }}
+                key={meeting.name}
+                className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition-all"
               >
-                <div className="flex items-start gap-4 md:gap-6">
-                  <div
-                    className="rounded-lg p-3 md:p-4"
-                    style={{ background: `${colors.accent.blue}20` }}
-                  >
-                    <MeetingIcon
-                      className="h-6 w-6 md:h-8 md:w-8"
-                      style={{ color: colors.accent.blue }}
-                    />
+                <div className="flex items-start gap-4">
+                  <div className="rounded-lg p-3 bg-blue-50">
+                    <MeetingIcon className="h-5 w-5 text-blue-600" />
                   </div>
-                  <div className="flex-1">
-                    <h3
-                      className="mb-2 text-lg md:text-xl font-bold"
-                      style={{ color: colors.text.primary }}
-                    >
-                      {meeting.name}
-                    </h3>
-                    <p
-                      className="mb-1 text-sm md:text-base"
-                      style={{ color: colors.text.secondary }}
-                    >
-                      {meeting.time}
-                    </p>
-                    <p
-                      className="text-sm md:text-base"
-                      style={{ color: colors.text.muted }}
-                    >
-                      📍 {meeting.location}
-                    </p>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-gray-900 mb-1">{meeting.name}</h3>
+                    <p className="text-sm text-gray-500">{meeting.time}</p>
+                    <p className="text-sm text-gray-400">📍 {meeting.location}</p>
                   </div>
                 </div>
               </div>
             );
           })}
         </div>
+      </div>
+
+      {/* About */}
+      <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+        <h2 className="text-xl font-bold text-gray-900 mb-3">About Our Community</h2>
+        <p className="text-gray-600 mb-3">
+          We are a vibrant spiritual community dedicated to growing together in faith, sharing the Gospel,
+          and supporting one another through prayer and fellowship.
+        </p>
+        <p className="text-gray-500">
+          Our mission is to create a welcoming space where believers can deepen their relationship with God,
+          discover biblical wisdom through sermons and teachings, and build meaningful connections with their
+          brothers and sisters in Christ.
+        </p>
       </div>
     </div>
   );

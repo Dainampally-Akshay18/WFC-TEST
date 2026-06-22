@@ -1,10 +1,3 @@
-/**
- * MAIN LAYOUT
- * Primary layout for authenticated routes
- * Navbar + Sidebar + Content area
- * Mobile-responsive with collapsible sidebar
- */
-
 import { useEffect } from "react";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
@@ -14,7 +7,7 @@ const MainLayout = ({ children }) => {
   const { sidebarOpen } = useUIStore();
 
   useEffect(() => {
-    const isMobile = window.innerWidth < 768;
+    const isMobile = window.innerWidth < 1024;
     if (isMobile && sidebarOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -26,18 +19,15 @@ const MainLayout = ({ children }) => {
   }, [sidebarOpen]);
 
   return (
-    <div className="flex flex-col min-h-screen" style={{ background: "#F5F9FF" }}>
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
+      <Sidebar />
 
-      <div className="relative flex flex-1">
-        <Sidebar />
-
-        <main className="flex-1 overflow-y-auto overflow-x-hidden md:ml-64">
-          <div className="mx-auto w-full max-w-6xl px-4 py-6 md:px-8 md:py-8">
-            {children}
-          </div>
-        </main>
-      </div>
+      <main className="flex-1">
+        <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 md:py-8">
+          {children}
+        </div>
+      </main>
     </div>
   );
 };

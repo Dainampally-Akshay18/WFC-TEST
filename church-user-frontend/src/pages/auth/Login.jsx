@@ -1,10 +1,3 @@
-/**
- * LOGIN PAGE
- * User authentication page
- * Clean professional design with blue-white theme
- * Mobile-responsive with functional API integration
- */
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
@@ -17,22 +10,15 @@ const Login = () => {
   const { login, setLoading, setError, loading, error } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
     if (error) setError(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!formData.email || !formData.password) {
       setError("Please fill in all fields");
       return;
@@ -43,11 +29,9 @@ const Login = () => {
 
     try {
       const response = await authAPI.login(formData.email, formData.password);
-
       if (response.success) {
         const { token, user } = response.data;
         login(user, token);
-
         if (user.status?.toUpperCase() === "APPROVED") {
           navigate("/home", { replace: true });
         } else {
@@ -57,22 +41,12 @@ const Login = () => {
         setError(response.error?.message || "Login failed");
       }
     } catch (err) {
-      const errorMessage =
-        err.error?.message ||
-        err.message ||
-        err.response?.data?.message ||
-        "An error occurred during login";
-
+      const errorMessage = err.error?.message || err.message || err.response?.data?.message || "An error occurred during login";
       const lowerError = errorMessage.toLowerCase();
-      if (
-        lowerError.includes("not approved") ||
-        lowerError.includes("wait for admin") ||
-        lowerError.includes("pending")
-      ) {
+      if (lowerError.includes("not approved") || lowerError.includes("wait for admin") || lowerError.includes("pending")) {
         navigate("/wait-approval", { replace: true });
         return;
       }
-
       setError(errorMessage);
       console.error("Login error:", err);
     } finally {
@@ -83,39 +57,26 @@ const Login = () => {
   return (
     <AuthLayout>
       <div className="text-center mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: "#0F172A" }}>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
           Welcome Back
         </h1>
-        <p className="text-sm md:text-base" style={{ color: "#64748B" }}>
+        <p className="text-sm md:text-base text-gray-500">
           Sign in to your account to continue
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Error Alert */}
         {error && (
-          <div
-            className="rounded-lg p-3 text-sm"
-            style={{
-              background: "rgba(239, 68, 68, 0.08)",
-              color: "#EF4444",
-              border: "1px solid rgba(239, 68, 68, 0.2)",
-            }}
-          >
+          <div className="rounded-lg p-3 text-sm bg-red-50 text-red-600 border border-red-100">
             {error}
           </div>
         )}
 
         {/* Email */}
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: "#0F172A" }}>
-            Email Address
-          </label>
+          <label className="block text-sm font-medium text-gray-900 mb-2">Email Address</label>
           <div className="relative">
-            <Mail
-              className="absolute left-3.5 top-3.5 h-4.5 w-4.5"
-              style={{ color: "#94A3B8" }}
-            />
+            <Mail className="absolute left-3.5 top-3.5 h-4 w-4 text-gray-400" />
             <input
               type="email"
               name="email"
@@ -123,36 +84,16 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               disabled={loading}
-              className="w-full rounded-lg pl-11 pr-4 py-3 text-sm transition-all duration-200 focus:outline-none disabled:opacity-50"
-              style={{
-                background: "#F8FAFC",
-                border: "1px solid #E2E8F0",
-                color: "#0F172A",
-              }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderColor = "#2563EB";
-                e.currentTarget.style.boxShadow = "0 0 0 3px rgba(37,99,235,0.1)";
-                e.currentTarget.style.background = "#FFFFFF";
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = "#E2E8F0";
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.background = "#F8FAFC";
-              }}
+              className="w-full rounded-lg pl-11 pr-4 py-3 text-sm bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 focus:bg-white disabled:opacity-50 transition-all"
             />
           </div>
         </div>
 
         {/* Password */}
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: "#0F172A" }}>
-            Password
-          </label>
+          <label className="block text-sm font-medium text-gray-900 mb-2">Password</label>
           <div className="relative">
-            <Lock
-              className="absolute left-3.5 top-3.5 h-4.5 w-4.5"
-              style={{ color: "#94A3B8" }}
-            />
+            <Lock className="absolute left-3.5 top-3.5 h-4 w-4 text-gray-400" />
             <input
               type={showPassword ? "text" : "password"}
               name="password"
@@ -160,54 +101,26 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               disabled={loading}
-              className="w-full rounded-lg pl-11 pr-11 py-3 text-sm transition-all duration-200 focus:outline-none disabled:opacity-50"
-              style={{
-                background: "#F8FAFC",
-                border: "1px solid #E2E8F0",
-                color: "#0F172A",
-              }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderColor = "#2563EB";
-                e.currentTarget.style.boxShadow = "0 0 0 3px rgba(37,99,235,0.1)";
-                e.currentTarget.style.background = "#FFFFFF";
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = "#E2E8F0";
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.background = "#F8FAFC";
-              }}
+              className="w-full rounded-lg pl-11 pr-11 py-3 text-sm bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 focus:bg-white disabled:opacity-50 transition-all"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-3.5"
+              className="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600"
               disabled={loading}
             >
-              {showPassword ? (
-                <EyeOff className="h-4.5 w-4.5" style={{ color: "#94A3B8" }} />
-              ) : (
-                <Eye className="h-4.5 w-4.5" style={{ color: "#94A3B8" }} />
-              )}
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
         </div>
 
-        {/* Remember / Forgot */}
+        {/* Remember + Forgot */}
         <div className="flex items-center justify-between text-sm">
           <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              className="rounded"
-              disabled={loading}
-              style={{ accentColor: "#2563EB" }}
-            />
-            <span style={{ color: "#64748B" }}>Remember me</span>
+            <input type="checkbox" className="rounded accent-blue-600" disabled={loading} />
+            <span className="text-gray-500">Remember me</span>
           </label>
-          <a
-            href="/auth/forgot-password"
-            className="font-medium hover:underline"
-            style={{ color: "#2563EB" }}
-          >
+          <a href="/auth/forgot-password" className="font-medium text-blue-600 hover:underline">
             Forgot password?
           </a>
         </div>
@@ -216,26 +129,11 @@ const Login = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-lg py-3 font-semibold text-sm transition-all duration-200 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-          style={{
-            background: loading ? "#93C5FD" : "#2563EB",
-            color: "#FFFFFF",
-            boxShadow: "0 2px 8px rgba(37,99,235,0.25)",
-          }}
-          onMouseEnter={(e) => {
-            if (!loading) {
-              e.currentTarget.style.background = "#1D4ED8";
-              e.currentTarget.style.transform = "translateY(-1px)";
-              e.currentTarget.style.boxShadow = "0 4px 12px rgba(37,99,235,0.35)";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!loading) {
-              e.currentTarget.style.background = "#2563EB";
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 2px 8px rgba(37,99,235,0.25)";
-            }
-          }}
+          className={`w-full rounded-lg py-3 font-semibold text-sm text-white transition-all flex items-center justify-center gap-2 ${
+            loading
+              ? "bg-blue-300 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md"
+          }`}
         >
           {loading ? (
             <>
@@ -247,14 +145,9 @@ const Login = () => {
           )}
         </button>
 
-        {/* Sign Up Link */}
-        <p className="text-center text-sm" style={{ color: "#64748B" }}>
+        <p className="text-center text-sm text-gray-500">
           Don't have an account?{" "}
-          <a
-            href="/auth/register"
-            className="font-semibold hover:underline"
-            style={{ color: "#2563EB" }}
-          >
+          <a href="/auth/register" className="font-semibold text-blue-600 hover:underline">
             Create one
           </a>
         </p>

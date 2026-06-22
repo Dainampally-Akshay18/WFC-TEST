@@ -1,36 +1,23 @@
 /**
  * THEME CONFIG
- * Tailwind and design system configuration
+ * Design system configuration — Single Light Theme
  */
 
 export const themeConfig = {
-  // Color palette
   colors: {
-    dark: {
-      background: "#05010A",
-      surface: "#12051F",
-      surfaceHigh: "#1A0B2E",
-      primary: "#B026FF",
-      secondary: "#FF2CDF",
-      accent: "#3B82FF",
-      text: "#FFFFFF",
-      textSecondary: "#B8B8C5",
-      textMuted: "#7E7E94",
-    },
     light: {
-      background: "#F8F5FF",
+      background: "#F5F9FF",
       surface: "#FFFFFF",
       surfaceHigh: "#FFFFFF",
-      primary: "#6D28D9",
-      secondary: "#8B5CF6",
-      accent: "#60A5FA",
-      text: "#2E1065",
-      textSecondary: "#5B4B7A",
-      textMuted: "#8E8AA5",
+      primary: "#2563EB",
+      secondary: "#3B82F6",
+      accent: "#0EA5E9",
+      text: "#0F172A",
+      textSecondary: "#64748B",
+      textMuted: "#94A3B8",
     },
   },
 
-  // Spacing scale
   spacing: {
     0: "0",
     1: "4px",
@@ -43,7 +30,6 @@ export const themeConfig = {
     16: "64px",
   },
 
-  // Border radius
   borderRadius: {
     sm: "8px",
     md: "12px",
@@ -52,7 +38,6 @@ export const themeConfig = {
     full: "9999px",
   },
 
-  // Transitions
   transition: {
     fast: "150ms",
     base: "200ms",

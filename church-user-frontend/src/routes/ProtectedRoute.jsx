@@ -15,7 +15,7 @@ const ProtectedRoute = ({ children }) => {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
-          <div className="h-12 w-12 rounded-full border-4 border-purple-500 border-t-transparent animate-spin mx-auto mb-4" />
+          <div className="h-12 w-12 rounded-full border-4 border-blue-500 border-t-transparent animate-spin mx-auto mb-4" />
           <p>Loading...</p>
         </div>
       </div>

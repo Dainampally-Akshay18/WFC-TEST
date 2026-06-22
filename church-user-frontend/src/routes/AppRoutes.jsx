@@ -244,7 +244,7 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <MainLayout>
-              <div style={{ color: "#fff" }}>Profile Page - Coming Soon</div>
+              <div style={{ color: "#0F172A" }}>Profile Page - Coming Soon</div>
             </MainLayout>
           </ProtectedRoute>
         }

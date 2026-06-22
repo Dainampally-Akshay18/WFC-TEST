@@ -1,74 +1,42 @@
 /**
  * CENTRALIZED COLOR PALETTE
  * Single source of truth for all theme colors
- * Supports both dark and light modes
+ * Professional Light Theme Only — 2026 Blue-White Church Theme
  */
 
 export const colors = {
-  // DARK MODE
-  dark: {
-    // Backgrounds
-    background: {
-      primary: "#05010A",
-      secondary: "#12051F",
-      elevated: "#1A0B2E",
-    },
-    // Text
-    text: {
-      primary: "#FFFFFF",
-      secondary: "#B8B8C5",
-      muted: "#7E7E94",
-    },
-    // Accents
-    accent: {
-      purple: "#B026FF",
-      pink: "#FF2CDF",
-      blue: "#3B82FF",
-    },
-    // Borders
-    border: {
-      glass: "rgba(255,255,255,0.1)",
-      active: "rgba(176,38,255,0.5)",
-    },
-    // Glows
-    glow: {
-      purple: "rgba(176,38,255,0.35)",
-      pink: "rgba(255,44,223,0.25)",
-      blue: "rgba(59,130,255,0.2)",
-    },
-  },
-
-  // LIGHT MODE
   light: {
     // Backgrounds
     background: {
-      primary: "#F8F5FF",
-      secondary: "#EFE7FF",
+      primary: "#F5F9FF",
+      secondary: "#FFFFFF",
       elevated: "#FFFFFF",
+      hover: "#F1F5F9",
     },
     // Text
     text: {
-      primary: "#2E1065",
-      secondary: "#5B4B7A",
-      muted: "#8E8AA5",
+      primary: "#0F172A",
+      secondary: "#64748B",
+      muted: "#94A3B8",
+      light: "#FFFFFF",
     },
-    // Accents
+    // Semantic Colors
+    semantic: {
+      primary: "#2563EB",
+      primaryHover: "#1D4ED8",
+      success: "#22C55E",
+      warning: "#F59E0B",
+      error: "#EF4444",
+      info: "#3B82F6",
+    },
+    // Accent colors (mapped from old purple palette to new blue system)
     accent: {
-      purple: "#6D28D9",
-      violet: "#8B5CF6",
-      pink: "#D946EF",
-      blue: "#60A5FA",
+      purple: "#2563EB",
     },
-    // Borders
-    border: {
-      glass: "rgba(109,40,217,0.15)",
-      active: "rgba(109,40,217,0.35)",
-    },
-    // Glows
-    glow: {
-      purple: "rgba(139,92,246,0.18)",
-      pink: "rgba(217,70,239,0.15)",
-      blue: "rgba(96,165,250,0.12)",
-    },
+    // UI Elements
+    navbar: "#0F172A",
+    border: "#E2E8F0",
+    divider: "#E2E8F0",
+    overlay: "rgba(0,0,0,0.4)",
   },
 };

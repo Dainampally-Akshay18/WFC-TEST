@@ -42,7 +42,7 @@ export const appConfig = {
 
   // Feature flags
   features: {
-    darkMode: true,
+    darkMode: false,
     notifications: true,
     prayers: true,
   },

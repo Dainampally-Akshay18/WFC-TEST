@@ -1,193 +1,136 @@
 /**
  * NAVBAR COMPONENT
- * Premium minimal navigation bar with glassmorphism
- * Sticky top bar with theme toggle
- * Mobile-responsive with hamburger menu
- * 
- * Z-index: z-40 (below overlay, above sidebar on desktop)
- * Height: py-3 (mobile) / py-4 (desktop) for consistent sizing
+ * Navy blue (#0F172A) sticky navbar with white text
+ * Compact height, modern hover states, responsive
  */
 
 import { useNavigate, useLocation } from "react-router-dom";
-import { useTheme } from "../context/ThemeProvider";
 import { useUIStore } from "../store/uiStore";
 import { useAuth } from "../hooks/useAuth";
-import { Sun, Moon, Menu, X } from "lucide-react";
+import { Menu, X, ChevronRight } from "lucide-react";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isDarkMode, toggleTheme, colors, glassmorphism, shadows } = useTheme();
   const { toggleSidebar, sidebarOpen } = useUIStore();
   const { isAuthenticated } = useAuth();
 
   const isLandingPage = location.pathname === "/";
 
-  const navStyle = {
-    background: glassmorphism.nav.background,
-    border: `1px solid ${glassmorphism.nav.border}`,
-    backdropFilter: glassmorphism.nav.backdropFilter,
-    boxShadow: shadows.md,
-  };
-
   return (
-    <nav 
-      style={navStyle} 
-      className="sticky top-0 z-40 w-full px-4 py-3 md:px-6 md:py-4"
+    <nav
+      className="sticky top-0 z-40 w-full"
+      style={{
+        background: "#0F172A",
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08)",
+      }}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between">
-        {/* LEFT: Logo and Menu Toggle */}
-        <div className="flex items-center gap-3 md:gap-6">
-          {isAuthenticated && (
-            <button
-              onClick={toggleSidebar}
-              className="rounded-lg p-2 transition-colors duration-200 md:hidden"
-              style={{
-                color: colors.text.primary,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = isDarkMode 
-                  ? "rgba(255,255,255,0.1)" 
-                  : "rgba(109,40,217,0.1)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-              }}
-              aria-label="Toggle sidebar"
-            >
-              {sidebarOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </button>
-          )}
-
-          {/* Logo and Church Name */}
-          <div className="flex flex-col items-start gap-0">
-            <div className="text-lg md:text-2xl font-bold">
-              <span
-                key={`wfc-logo-${isDarkMode}`}
-                style={{
-                  background: `linear-gradient(135deg, ${colors.accent.purple}, ${colors.accent.pink})`,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  display: "inline-block",
-                  minWidth: "100%",
-                }}
-              >
-                WFC
-              </span>
-            </div>
-            <span
-              className="hidden md:block text-xs font-medium"
-              style={{ color: colors.text.secondary }}
-            >
-              Community Platform
-            </span>
-          </div>
-        </div>
-
-        {/* RIGHT: Auth Buttons + Theme Toggle */}
-        <div className="flex items-center gap-2 md:gap-4">
-          {/* Landing Page Auth Buttons */}
-          {isLandingPage && !isAuthenticated && (
-            <>
+      <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="flex items-center justify-between h-14 md:h-16">
+          {/* LEFT: Menu + Logo */}
+          <div className="flex items-center gap-3">
+            {isAuthenticated && !isLandingPage && (
               <button
-                onClick={() => navigate("/auth/login")}
-                className="px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-all duration-200"
-                style={{
-                  color: colors.text.primary,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = isDarkMode 
-                    ? "rgba(255,255,255,0.1)" 
-                    : "rgba(109,40,217,0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "transparent";
-                }}
+                onClick={toggleSidebar}
+                className="p-2 rounded-lg md:hidden transition-colors duration-200 hover:bg-white/10"
+                style={{ color: "#FFFFFF" }}
+                aria-label="Toggle sidebar"
               >
-                Login
+                {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
-              <button
-                onClick={() => navigate("/auth/register")}
-                className="px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-all duration-200"
-                style={{
-                  background: `linear-gradient(135deg, ${colors.accent.purple}, ${colors.accent.pink})`,
-                  color: colors.text.primary,
-                  boxShadow: `0 0 15px ${colors.glow.purple}`,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "scale(1.05)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "scale(1)";
-                }}
-              >
-                Signup
-              </button>
-            </>
-          )}
-
-          {/* Logged In User - Home Button */}
-          {isLandingPage && isAuthenticated && (
-            <button
-              onClick={() => navigate("/home")}
-              className="px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-all duration-200"
-              style={{
-                background: `linear-gradient(135deg, ${colors.accent.purple}, ${colors.accent.pink})`,
-                color: colors.text.primary,
-                boxShadow: `0 0 15px ${colors.glow.purple}`,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "scale(1.05)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
-              }}
-            >
-              Home
-            </button>
-          )}
-
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="rounded-lg p-2.5 md:p-3 transition-all duration-200 group"
-            style={{
-              color: colors.text.primary,
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = isDarkMode 
-                ? "rgba(255,255,255,0.1)" 
-                : "rgba(109,40,217,0.1)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "transparent";
-            }}
-            aria-label="Toggle dark mode"
-            title={isDarkMode ? "Light Mode" : "Dark Mode"}
-          >
-            {isDarkMode ? (
-              <Sun
-                className="h-5 w-5 md:h-6 md:w-6 transition-transform duration-300 group-hover:rotate-12"
-                style={{
-                  color: colors.accent.blue,
-                  filter: `drop-shadow(0 0 8px ${colors.glow.blue})`,
-                }}
-              />
-            ) : (
-              <Moon
-                className="h-5 w-5 md:h-6 md:w-6 transition-transform duration-300 group-hover:rotate-12"
-                style={{
-                  color: colors.accent.purple,
-                  filter: `drop-shadow(0 0 8px ${colors.glow.purple})`,
-                }}
-              />
             )}
-          </button>
+
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              {/* Logo Icon */}
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm"
+                style={{
+                  background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
+                  color: "#FFFFFF",
+                }}
+              >
+                W
+              </div>
+              <div>
+                <span className="text-base md:text-lg font-bold text-white tracking-tight">
+                  WFC
+                </span>
+                <span className="hidden sm:inline text-xs text-white/60 ml-2 font-medium">
+                  Community
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT: Navigation CTAs */}
+          <div className="flex items-center gap-2 md:gap-3">
+            {/* Landing Page — Unauthenticated */}
+            {isLandingPage && !isAuthenticated && (
+              <>
+                <button
+                  onClick={() => navigate("/auth/login")}
+                  className="px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 text-white/90 hover:text-white hover:bg-white/8"
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => navigate("/auth/register")}
+                  className="px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center gap-1.5 group"
+                  style={{
+                    background: "#2563EB",
+                    color: "#FFFFFF",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "#1D4ED8";
+                    e.currentTarget.style.transform = "translateY(-1px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "#2563EB";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
+                >
+                  Get Started
+                  <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </button>
+              </>
+            )}
+
+            {/* Landing Page — Authenticated */}
+            {isLandingPage && isAuthenticated && (
+              <button
+                onClick={() => navigate("/home")}
+                className="px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center gap-1.5 group"
+                style={{
+                  background: "#2563EB",
+                  color: "#FFFFFF",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#1D4ED8";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "#2563EB";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                Dashboard
+                <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </button>
+            )}
+
+            {/* Inner pages — Authenticated */}
+            {!isLandingPage && isAuthenticated && (
+              <button
+                onClick={() => navigate("/profile")}
+                className="px-3 py-1.5 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/8 transition-all duration-200"
+              >
+                Profile
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </nav>

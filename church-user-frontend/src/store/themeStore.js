@@ -1,7 +1,7 @@
 /**
  * THEME STORE (Zustand)
- * Manages dark/light mode state globally
- * Persists theme preference to localStorage
+ * Manages theme state - Light mode only
+ * Simplified for single-theme support
  */
 
 import { create } from "zustand";
@@ -10,41 +10,22 @@ import { persist } from "zustand/middleware";
 export const useThemeStore = create(
   persist(
     (set, get) => ({
-      // Initial state
-      theme: "dark", // "dark" | "light"
+      // Initial state - Light mode only
+      theme: "light",
 
       // Actions
-      toggleTheme: () => {
-        const current = get().theme;
-        const newTheme = current === "dark" ? "light" : "dark";
-        set({ theme: newTheme });
-
-        // Update document root class for Tailwind dark mode support
-        if (newTheme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-      },
-
       setTheme: (theme) => {
-        set({ theme });
-
-        // Update document root class
-        if (theme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
+        // Only light mode is supported
+        set({ theme: "light" });
       },
 
       // Getters
-      isDarkMode: () => get().theme === "dark",
-      isLightMode: () => get().theme === "light",
+      isDarkMode: () => false,
+      isLightMode: () => true,
     }),
     {
       name: "theme-store", // localStorage key
-      partialize: (state) => ({ theme: state.theme }), // Only persist theme
+      partialize: (state) => ({ theme: state.theme }),
     }
   )
 );

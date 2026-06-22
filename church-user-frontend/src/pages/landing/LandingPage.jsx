@@ -1,287 +1,211 @@
-/**
- * LANDING PAGE — Premium 2026 SaaS Design
- * Inspired by Stripe, Linear, Vercel
- * Self-contained navbar + hero + features + stats + CTA + footer
- */
-
-import { ChevronRight, Heart, BookOpen, Users, Church, Calendar, Sparkles, ArrowRight } from "lucide-react";
+import { ChevronRight, Heart, BookOpen, Users, Church, Calendar, Sparkles, ArrowRight, MessageCircle, Share2, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen" style={{ background: "#F5F9FF" }}>
+    <div className="min-h-screen bg-white selection:bg-blue-100 selection:text-blue-900">
       {/* ══════════════════════════════════════════════════════ */}
-      {/* NAVBAR */}
+      {/* NAVBAR - Ultra Clean Enterprise */}
       {/* ══════════════════════════════════════════════════════ */}
-      <nav
-        className="sticky top-0 z-50 w-full"
-        style={{
-          background: "#0F172A",
-          boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)",
-        }}
-      >
-        <div className="mx-auto max-w-7xl px-4 md:px-6 flex items-center justify-between h-14 md:h-16">
-          {/* Logo */}
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-            <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm"
-              style={{ background: "linear-gradient(135deg, #2563EB, #1D4ED8)", color: "#fff" }}
-            >
-              W
+      <nav className="sticky top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate("/")}>
+              <div className="relative">
+                <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">W</span>
+                </div>
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-400 rounded-full border-2 border-white" />
+              </div>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-lg font-bold text-gray-900 tracking-tight">WFC</span>
+                <span className="text-xs font-medium text-gray-400 hidden sm:inline">Community</span>
+              </div>
             </div>
-            <span className="text-base md:text-lg font-bold text-white tracking-tight">WFC</span>
-            <span className="hidden sm:inline text-xs text-white/60 ml-1 font-medium">Community</span>
-          </div>
 
-          {/* CTA Buttons */}
-          <div className="flex items-center gap-2 md:gap-3">
-            <button
-              onClick={() => navigate("/auth/login")}
-              className="px-4 py-2 rounded-lg font-medium text-sm text-white/90 hover:text-white hover:bg-white/8 transition-all duration-200"
-            >
-              Sign In
-            </button>
-            <button
-              onClick={() => navigate("/auth/register")}
-              className="px-4 py-2 rounded-lg font-semibold text-sm text-white flex items-center gap-1.5 transition-all duration-200 group"
-              style={{ background: "#2563EB" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#1D4ED8";
-                e.currentTarget.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#2563EB";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              Get Started
-              <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </button>
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-8">
+              {["Features", "Sermons", "Events", "Community"].map((item) => (
+                <a
+                  key={item}
+                  href="#"
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  {item}
+                </a>
+              ))}
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate("/auth/login")}
+                className="hidden sm:inline-flex px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+              >
+                Sign In
+              </button>
+              <button
+                onClick={() => navigate("/auth/register")}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
+              >
+                Get Started
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </nav>
 
       {/* ══════════════════════════════════════════════════════ */}
-      {/* HERO SECTION */}
+      {/* HERO SECTION - Bold & Minimal */}
       {/* ══════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden">
-        {/* Subtle background gradient orb */}
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] opacity-30 pointer-events-none"
-          style={{
-            background: "radial-gradient(ellipse at center, rgba(37,99,235,0.15) 0%, transparent 70%)",
-          }}
-        />
-
-        <div className="relative mx-auto max-w-7xl px-6 pt-16 md:pt-20 pb-12 md:pb-16">
-          {/* Badge */}
-          <div className="flex justify-center mb-6 animate-fade-in">
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
-              style={{
-                background: "rgba(37,99,235,0.08)",
-                color: "#2563EB",
-                border: "1px solid rgba(37,99,235,0.15)",
-              }}
-            >
-              <Sparkles className="w-4 h-4" />
-              Welcome to WFC Community
-            </div>
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-center mb-5 animate-slide-up" style={{ color: "#0F172A" }}>
-            <span className="block text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight">
-              Growing Together
-            </span>
-            <span
-              className="block text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight mt-1"
-              style={{
-                background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              in Faith
-            </span>
-          </h1>
-
-          {/* Subheading */}
-          <p
-            className="text-center text-base md:text-lg max-w-2xl mx-auto mb-8 animate-fade-in leading-relaxed"
-            style={{ color: "#64748B" }}
-          >
-            Join a thriving community of believers. Share prayers, discover
-            inspiring sermons, attend meaningful events, and strengthen your
-            spiritual journey together.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-14 animate-slide-up">
-            <button
-              onClick={() => navigate("/auth/register")}
-              className="w-full sm:w-auto px-8 py-3 rounded-xl font-semibold text-base text-white flex items-center justify-center gap-2 group transition-all duration-200"
-              style={{
-                background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
-                boxShadow: "0 4px 14px rgba(37,99,235,0.3)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 6px 20px rgba(37,99,235,0.4)";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 4px 14px rgba(37,99,235,0.3)";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              Join Our Community
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-
-            <button
-              onClick={() => navigate("/auth/login")}
-              className="w-full sm:w-auto px-8 py-3 rounded-xl font-semibold text-base flex items-center justify-center gap-2 transition-all duration-200"
-              style={{
-                background: "#FFFFFF",
-                color: "#0F172A",
-                border: "1px solid #E2E8F0",
-                boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#CBD5E1";
-                e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
-                e.currentTarget.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#E2E8F0";
-                e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.06)";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              Sign In
-            </button>
-          </div>
-
-          {/* Stats Strip */}
-          <div className="grid grid-cols-3 gap-6 md:gap-10 max-w-lg mx-auto">
-            {[
-              { value: "2,847+", label: "Active Members" },
-              { value: "234+", label: "Sermons Shared" },
-              { value: "156+", label: "Active Prayers" },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="text-2xl md:text-3xl font-bold" style={{ color: "#2563EB" }}>
-                  {stat.value}
-                </p>
-                <p className="text-xs md:text-sm mt-1 font-medium" style={{ color: "#94A3B8" }}>
-                  {stat.label}
-                </p>
+      <section className="relative overflow-hidden bg-gradient-to-b from-white to-gray-50">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left Content */}
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100">
+                <Sparkles className="w-4 h-4 text-blue-600" />
+                <span className="text-sm font-medium text-blue-700">Welcome to WFC Community</span>
               </div>
-            ))}
+
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-gray-900">
+                Growing Together
+                <span className="block text-blue-600">in Faith</span>
+              </h1>
+
+              <p className="text-lg text-gray-600 max-w-md leading-relaxed">
+                Join a thriving community of believers. Share prayers, discover inspiring sermons, 
+                attend meaningful events, and strengthen your spiritual journey together.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => navigate("/auth/register")}
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
+                >
+                  Join Our Community
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => navigate("/auth/login")}
+                  className="inline-flex items-center justify-center px-8 py-3.5 rounded-lg text-base font-semibold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition-all"
+                >
+                  Sign In
+                </button>
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="flex items-center gap-6 pt-4">
+                {[
+                  { icon: Users, label: "2,847+ Active Members" },
+                  { icon: BookOpen, label: "234+ Sermons" },
+                  { icon: Heart, label: "156+ Prayers" },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center gap-2">
+                    <item.icon className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-medium text-gray-600">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Content - Feature Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { icon: BookOpen, title: "Watch Sermons", desc: "Inspiring messages" },
+                { icon: Heart, title: "Share Prayers", desc: "Community support" },
+                { icon: Calendar, title: "Join Events", desc: "Connect & grow" },
+                { icon: Users, title: "Community", desc: "Build relationships" },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  className="p-6 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-3">
+                    <item.icon className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900">{item.title}</h3>
+                  <p className="text-sm text-gray-500">{item.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════ */}
-      {/* FEATURES SECTION */}
+      {/* FEATURES SECTION - Clean Grid */}
       {/* ══════════════════════════════════════════════════════ */}
-      <section className="py-12 md:py-20" style={{ background: "#FFFFFF" }}>
-        <div className="mx-auto max-w-7xl px-6">
-          {/* Section Header */}
-          <div className="text-center mb-12 md:mb-14">
-            <p className="text-sm font-semibold uppercase tracking-wider mb-3" style={{ color: "#2563EB" }}>
-              Platform Features
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: "#0F172A" }}>
-              Everything You Need
-            </h2>
-            <p className="text-base md:text-lg max-w-xl mx-auto" style={{ color: "#64748B" }}>
-              Tools designed to deepen your faith and connect with our community
-            </p>
+      <section className="py-20 bg-white border-t border-gray-100">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">Platform Features</span>
+            <h2 className="text-3xl sm:text-4xl font-bold mt-3 mb-4 text-gray-900">Everything You Need</h2>
+            <p className="text-lg text-gray-600">Tools designed to deepen your faith and connect with our community.</p>
           </div>
 
-          {/* Feature Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
                 icon: BookOpen,
                 title: "Watch Sermons",
-                desc: "Access our library of powerful, inspiring sermons designed to strengthen your faith and guide your spiritual journey.",
-                color: "#2563EB",
-                bg: "rgba(37,99,235,0.08)",
+                desc: "Access our library of powerful, inspiring sermons designed to strengthen your faith.",
+                color: "blue",
               },
               {
                 icon: Heart,
                 title: "Share Prayers",
-                desc: "Lift up one another with prayer requests. Experience the power of collective intercession and spiritual support.",
-                color: "#EC4899",
-                bg: "rgba(236,72,153,0.08)",
+                desc: "Lift up one another with prayer requests and experience collective intercession.",
+                color: "rose",
               },
               {
                 icon: Calendar,
                 title: "Join Events",
-                desc: "Stay connected with meaningful church gatherings, events, and community activities that build unity and fellowship.",
-                color: "#F59E0B",
-                bg: "rgba(245,158,11,0.08)",
+                desc: "Stay connected with meaningful church gatherings and community activities.",
+                color: "amber",
               },
               {
                 icon: Users,
                 title: "Community",
-                desc: "Connect with fellow believers, build lasting relationships, and grow together in faith as one body.",
-                color: "#22C55E",
-                bg: "rgba(34,197,94,0.08)",
+                desc: "Connect with fellow believers and grow together in faith as one body.",
+                color: "emerald",
               },
               {
                 icon: Church,
                 title: "Church News",
-                desc: "Stay informed with the latest updates, blog posts, and announcements from your church community.",
-                color: "#8B5CF6",
-                bg: "rgba(139,92,246,0.08)",
+                desc: "Stay informed with the latest updates and announcements from your church.",
+                color: "violet",
               },
               {
                 icon: Sparkles,
                 title: "Daily Inspiration",
-                desc: "Receive uplifting content, devotionals, and scripture to nourish your spirit every single day.",
-                color: "#0EA5E9",
-                bg: "rgba(14,165,233,0.08)",
+                desc: "Receive uplifting content and scripture to nourish your spirit every day.",
+                color: "cyan",
               },
             ].map((feature) => {
               const Icon = feature.icon;
+              const colorMap = {
+                blue: "bg-blue-50 text-blue-600",
+                rose: "bg-rose-50 text-rose-600",
+                amber: "bg-amber-50 text-amber-600",
+                emerald: "bg-emerald-50 text-emerald-600",
+                violet: "bg-violet-50 text-violet-600",
+                cyan: "bg-cyan-50 text-cyan-600",
+              };
               return (
                 <div
                   key={feature.title}
-                  className="rounded-2xl p-7 flex flex-col transition-all duration-300 cursor-default group"
-                  style={{
-                    background: "#FFFFFF",
-                    border: "1px solid #E2E8F0",
-                    boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-4px)";
-                    e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.08)";
-                    e.currentTarget.style.borderColor = "#CBD5E1";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.04)";
-                    e.currentTarget.style.borderColor = "#E2E8F0";
-                  }}
+                  className="group p-8 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-gray-200 transition-all"
                 >
-                  <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center mb-5"
-                    style={{ background: feature.bg }}
-                  >
-                    <Icon className="w-5 h-5" style={{ color: feature.color }} />
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-5 ${colorMap[feature.color]}`}>
+                    <Icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: "#0F172A" }}>
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed flex-grow" style={{ color: "#64748B" }}>
-                    {feature.desc}
-                  </p>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
+                  <p className="text-gray-500 leading-relaxed">{feature.desc}</p>
                 </div>
               );
             })}
@@ -290,55 +214,67 @@ const LandingPage = () => {
       </section>
 
       {/* ══════════════════════════════════════════════════════ */}
-      {/* CTA SECTION */}
+      {/* TESTIMONIALS / SOCIAL PROOF */}
       {/* ══════════════════════════════════════════════════════ */}
-      <section className="py-12 md:py-20 px-6" style={{ background: "#F5F9FF" }}>
-        <div className="mx-auto max-w-7xl">
-          <div
-            className="relative rounded-2xl overflow-hidden px-8 py-12 md:px-16 md:py-16 text-center"
-            style={{
-              background: "linear-gradient(135deg, #0F172A 0%, #1E293B 100%)",
-            }}
-          >
-            {/* Decorative gradient orbs */}
-            <div
-              className="absolute top-0 right-0 w-64 h-64 opacity-20 pointer-events-none"
-              style={{
-                background: "radial-gradient(circle, #2563EB, transparent 70%)",
-              }}
-            />
-            <div
-              className="absolute bottom-0 left-0 w-48 h-48 opacity-15 pointer-events-none"
-              style={{
-                background: "radial-gradient(circle, #3B82F6, transparent 70%)",
-              }}
-            />
+      <section className="py-20 bg-gray-50 border-t border-gray-100">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">Testimonials</span>
+            <h2 className="text-3xl sm:text-4xl font-bold mt-3 mb-4 text-gray-900">What Our Community Says</h2>
+            <p className="text-lg text-gray-600">Real stories from real people in our faith family.</p>
+          </div>
 
-            <div className="relative">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4">
-                Ready to Deepen Your Faith?
-              </h2>
-              <p className="text-base md:text-lg text-white/70 mb-8 max-w-xl mx-auto">
-                Join thousands of believers in our community today. It's completely free.
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                quote: "This platform has completely transformed my spiritual life. The sermons and community support are incredible.",
+                author: "Sarah Johnson",
+                role: "Active Member",
+              },
+              {
+                quote: "I've never felt more connected to a church community. The prayer wall and events keep me engaged every day.",
+                author: "Michael Chen",
+                role: "Prayer Group Leader",
+              },
+              {
+                quote: "The daily devotionals and sermon library have been a game-changer for my family's faith journey.",
+                author: "Emily Rodriguez",
+                role: "Ministry Volunteer",
+              },
+            ].map((testimonial, index) => (
+              <div
+                key={index}
+                className="p-8 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
+              >
+                <div className="flex gap-1 text-blue-500 mb-4">★★★★★</div>
+                <p className="text-gray-600 leading-relaxed mb-6">"{testimonial.quote}"</p>
+                <div>
+                  <p className="font-semibold text-gray-900">{testimonial.author}</p>
+                  <p className="text-sm text-gray-500">{testimonial.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════ */}
+      {/* CTA SECTION - Bold Enterprise */}
+      {/* ══════════════════════════════════════════════════════ */}
+      <section className="py-20 px-4 bg-white">
+        <div className="mx-auto max-w-4xl">
+          <div className="relative rounded-2xl overflow-hidden p-12 md:p-16 text-center bg-gray-900">
+            <div className="relative z-10">
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Ready to Deepen Your Faith?</h2>
+              <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+                Join thousands of believers in our community today. It's completely free to get started.
               </p>
               <button
                 onClick={() => navigate("/auth/register")}
-                className="px-8 py-3 rounded-xl font-semibold text-base transition-all duration-200 flex items-center justify-center gap-2 mx-auto group"
-                style={{
-                  background: "#FFFFFF",
-                  color: "#0F172A",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.2)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-lg text-base font-semibold text-gray-900 bg-white hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl"
               >
                 Create Your Free Account
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -346,52 +282,35 @@ const LandingPage = () => {
       </section>
 
       {/* ══════════════════════════════════════════════════════ */}
-      {/* FOOTER */}
+      {/* FOOTER - Professional */}
       {/* ══════════════════════════════════════════════════════ */}
-      <footer
-        className="py-12 md:py-14 px-6"
-        style={{
-          background: "#FFFFFF",
-          borderTop: "1px solid #E2E8F0",
-        }}
-      >
+      <footer className="py-16 px-4 bg-white border-t border-gray-100">
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {[
               {
-                title: "PLATFORM",
-                links: ["Sermons", "Blogs", "Events"],
+                title: "Platform",
+                links: ["Sermons", "Blogs", "Events", "Devotionals"],
               },
               {
-                title: "COMMUNITY",
-                links: ["Prayers", "Members", "Groups"],
+                title: "Community",
+                links: ["Prayers", "Members", "Groups", "Forum"],
               },
               {
-                title: "SUPPORT",
-                links: ["Contact", "FAQ", "Help Center"],
+                title: "Support",
+                links: ["Contact", "FAQ", "Help Center", "Guidelines"],
               },
               {
-                title: "LEGAL",
-                links: ["Privacy", "Terms", "Cookies"],
+                title: "Legal",
+                links: ["Privacy Policy", "Terms of Use", "Cookie Policy", "Accessibility"],
               },
             ].map((col) => (
               <div key={col.title}>
-                <h4
-                  className="font-semibold mb-4 text-xs uppercase tracking-wider"
-                  style={{ color: "#94A3B8" }}
-                >
-                  {col.title}
-                </h4>
+                <h4 className="font-semibold text-gray-900 mb-4">{col.title}</h4>
                 <ul className="space-y-2.5">
                   {col.links.map((link) => (
                     <li key={link}>
-                      <a
-                        href="#"
-                        className="text-sm transition-colors duration-200"
-                        style={{ color: "#64748B" }}
-                        onMouseEnter={(e) => (e.currentTarget.style.color = "#2563EB")}
-                        onMouseLeave={(e) => (e.currentTarget.style.color = "#64748B")}
-                      >
+                      <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors text-sm">
                         {link}
                       </a>
                     </li>
@@ -401,22 +320,14 @@ const LandingPage = () => {
             ))}
           </div>
 
-          <div
-            className="pt-8 flex flex-col md:flex-row items-center justify-between text-sm"
-            style={{
-              borderTop: "1px solid #F1F5F9",
-              color: "#94A3B8",
-            }}
-          >
-            <p>&copy; 2026 WFC Community Platform. All rights reserved.</p>
-            <div className="mt-3 md:mt-0 flex gap-5">
-              {["Twitter", "Facebook", "Instagram"].map((social) => (
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-sm border-t border-gray-100">
+            <p className="text-gray-500">&copy; 2026 WFC Community Platform. All rights reserved.</p>
+            <div className="flex gap-6 mt-4 sm:mt-0">
+              {["Twitter", "Facebook", "Instagram", "YouTube"].map((social) => (
                 <a
                   key={social}
                   href="#"
-                  className="transition-colors duration-200"
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "#2563EB")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "#94A3B8")}
+                  className="text-gray-400 hover:text-gray-600 transition-colors text-sm"
                 >
                   {social}
                 </a>
